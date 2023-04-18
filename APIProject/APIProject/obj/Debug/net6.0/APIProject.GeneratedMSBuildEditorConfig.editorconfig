@@ -16,6 +16,14 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = E:\Github\AspNetApi\APIProject\APIProject
 build_property._RazorSourceGeneratorDebug = 
 
+[E:/Github/AspNetApi/APIProject/APIProject/Views/Champion/ChampSelect.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2hhbXBpb25cQ2hhbXBTZWxlY3QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Github/AspNetApi/APIProject/APIProject/Views/Champion/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2hhbXBpb25cSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [E:/Github/AspNetApi/APIProject/APIProject/Views/HelloWorld/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSGVsbG9Xb3JsZFxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
