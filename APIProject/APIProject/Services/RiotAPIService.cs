@@ -24,6 +24,7 @@ namespace APIProject.Services
 
                 //json string which can be converted into c# object using deserialization.
                 string json = await response.Content.ReadAsStringAsync();
+                
                 return json;
             }
             catch (Exception ex)

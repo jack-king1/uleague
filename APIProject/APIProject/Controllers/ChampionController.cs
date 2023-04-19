@@ -21,10 +21,10 @@ namespace APIProject.Controllers
         public async Task<IActionResult> Test()
         {
             // Create an instance of the model
-            var championModel = new Champion();
+            var championAPI = new ChampionAPI();
 
             // Call the model method to retrieve data from the API
-            dynamic jsonData = await championModel.GetAllChampionDataFromApi();
+            dynamic jsonData = await championAPI.GetAllChampionDataFromApi();
 
             // Pass the retrieved data to the view
             return View(jsonData);

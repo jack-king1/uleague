@@ -3,50 +3,44 @@ using System.ComponentModel.DataAnnotations;
 using System.Net.Http;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json.Linq;
 
 namespace APIProject.Models
 {
     public class Champion
     {
-        [JsonProperty("id")]
-        public string champID { get; set; }
-        [JsonProperty("key")]
-        public string champKey { get; set; }
-        [JsonProperty("name")]
-        public string champName { get; set; }
+        public string version { get; set; }
+        public string id { get; set; }
+        public string key { get; set; }
+        public string name { get; set; }
         public string title { get; set; }
-        [JsonProperty("image")]
-        public Image imageData { get; set; }
-        [JsonProperty("skins")]
-        public List<Skins> champSkins { get; set; }
-        public string lore { get; set; }
         public string blurb { get; set; }
-        public string [] allytips { get; set; }
-        public string[] enemytips { get; set; } 
+
+        public Info info { get; set; }
+        public Image image { get; set; }
         public string[] tags { get; set; }
         public string partype { get; set; }
-        public Info info { get; set; }
         public Stats stats { get; set; }
-        public Spell spells { get; set; }
-        public Passive passive { get; set; }
-        public List<object> recommended { get; set; }
 
 
+    }
+
+    public class ChampionAPI
+    {
         public async Task<dynamic> GetAllChampionDataFromApi()
         {
-            List<Champion> championList = new List<Champion>();
+            Dictionary<string, Champion> champions = new Dictionary<string, Champion>();
             // Create an instance of the API service
             var riotAPIService = new RiotAPIService();
 
             // Call the API service method to retrieve data
             dynamic jsonDataString = await riotAPIService.GetAllChampionData();
-            dynamic jsonObj = JsonConvert.DeserializeObject<dynamic>(jsonDataString);
-            dynamic jsonChampData = jsonObj.data;
 
             try
             {
                 // ... process the retrieved data as needed ...
-                championList = JsonConvert.DeserializeObject<List<Champion>>(jsonChampData);
+                champions = JObject.Parse(jsonDataString)["data"].ToObject<Dictionary<string, Champion>>();
             }
             catch (Exception ex)
             {
@@ -55,18 +49,15 @@ namespace APIProject.Models
                 return null;
             }
             // Return the processed data
-            return championList;
+            return champions;
         }
     }
 
     public class Image
     {
-        [JsonProperty("full")]
-        public string fullImage { get; set; }
-        [JsonProperty("sprite")]
-        public string spriteImage { get; set; }
-        [JsonProperty("group")]
-        public string spriteGroup { get; set; }
+        public string full { get; set; }
+        public string sprite { get; set; }
+        public string group { get; set; }
         public int x { get; set; }
         public int y { get; set; }
         public int w { get; set; }
