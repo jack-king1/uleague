@@ -29,3 +29,5 @@ E:\Github\AspNetApi\APIProject\APIProject\obj\Debug\net6.0\refint\APIProject.dll
 E:\Github\AspNetApi\APIProject\APIProject\obj\Debug\net6.0\APIProject.pdb
 E:\Github\AspNetApi\APIProject\APIProject\obj\Debug\net6.0\APIProject.genruntimeconfig.cache
 E:\Github\AspNetApi\APIProject\APIProject\obj\Debug\net6.0\ref\APIProject.dll
+E:\Github\AspNetApi\APIProject\APIProject\bin\Debug\net6.0\Newtonsoft.Json.dll
+E:\Github\AspNetApi\APIProject\APIProject\obj\Debug\net6.0\APIProject.csproj.CopyComplete

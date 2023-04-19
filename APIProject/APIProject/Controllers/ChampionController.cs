@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using APIProject.Models;
+using System.Net.Http;
 
 namespace APIProject.Controllers
 {
@@ -7,8 +8,7 @@ namespace APIProject.Controllers
     {
         public IActionResult Index()
         {
-            Champion model = new Champion(0, "aatrox");
-            return View(model);                
+            return View();                
         }                                
 
         public IActionResult ChampSelect(string name, int numTimes = 1)
@@ -16,6 +16,18 @@ namespace APIProject.Controllers
             ViewData["Message"] = "Hello " + name;
             ViewData["NumTimes"] = numTimes;
             return View();
+        }
+
+        public async Task<IActionResult> Test()
+        {
+            // Create an instance of the model
+            var championModel = new Champion();
+
+            // Call the model method to retrieve data from the API
+            dynamic jsonData = await championModel.GetAllChampionDataFromApi();
+
+            // Pass the retrieved data to the view
+            return View(jsonData);
         }
     }
 }
