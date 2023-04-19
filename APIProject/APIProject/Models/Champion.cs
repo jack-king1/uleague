@@ -22,8 +22,6 @@ namespace APIProject.Models
         public string[] tags { get; set; }
         public string partype { get; set; }
         public Stats stats { get; set; }
-
-
     }
 
     public class ChampionAPI
