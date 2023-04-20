@@ -9,6 +9,14 @@
       "PackagePath": "staticwebassets\\css\\site.css"
     },
     {
+      "Id": "E:\\Github\\AspNetApi\\APIProject\\APIProject\\wwwroot\\data\\.gitignore",
+      "PackagePath": "staticwebassets\\data\\.gitignore"
+    },
+    {
+      "Id": "E:\\Github\\AspNetApi\\APIProject\\APIProject\\wwwroot\\data\\riot\\.gitkeep",
+      "PackagePath": "staticwebassets\\data\\riot\\.gitkeep"
+    },
+    {
       "Id": "E:\\Github\\AspNetApi\\APIProject\\APIProject\\wwwroot\\favicon.ico",
       "PackagePath": "staticwebassets\\favicon.ico"
     },

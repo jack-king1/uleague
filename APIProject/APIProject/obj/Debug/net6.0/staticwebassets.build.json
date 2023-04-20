@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "jHkWNgZbUtkJV2+DOn/X9HfXnoP/npk171NLzT4HCvU=",
+  "Hash": "UiMO0sARjDSn8m18VYp689XuezpL1qu0NMAFDQsjrfU=",
   "Source": "APIProject",
   "BasePath": "_content/APIProject",
   "Mode": "Default",
@@ -66,6 +66,40 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\site.css"
+    },
+    {
+      "Identity": "E:\\Github\\AspNetApi\\APIProject\\APIProject\\wwwroot\\data\\.gitignore",
+      "SourceId": "APIProject",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\Github\\AspNetApi\\APIProject\\APIProject\\wwwroot\\",
+      "BasePath": "_content/APIProject",
+      "RelativePath": "data/.gitignore",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\data\\.gitignore"
+    },
+    {
+      "Identity": "E:\\Github\\AspNetApi\\APIProject\\APIProject\\wwwroot\\data\\riot\\.gitkeep",
+      "SourceId": "APIProject",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\Github\\AspNetApi\\APIProject\\APIProject\\wwwroot\\",
+      "BasePath": "_content/APIProject",
+      "RelativePath": "data/riot/.gitkeep",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\data\\riot\\.gitkeep"
     },
     {
       "Identity": "E:\\Github\\AspNetApi\\APIProject\\APIProject\\wwwroot\\favicon.ico",

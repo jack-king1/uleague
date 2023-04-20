@@ -6,6 +6,8 @@ namespace APIProject.Services
 {
     public class RiotAPIService
     {
+        private string localDir = "E:/RiotImages/";
+
         private HttpClient _httpClient;
 
         public RiotAPIService()
@@ -18,13 +20,13 @@ namespace APIProject.Services
         {
             try
             {
-                string apiUrl = "http://ddragon.leagueoflegends.com/cdn/13.8.1/data/en_US/champion.json"; // Replace with your API URL
+                
+                string apiUrl = $"{localDir}13.8.1/data/en_GB/champion.json"; // Replace with your API URL
                 HttpResponseMessage response = await _httpClient.GetAsync(apiUrl);
                 response.EnsureSuccessStatusCode(); // Throw an exception if response is not successful
 
                 //json string which can be converted into c# object using deserialization.
                 string json = await response.Content.ReadAsStringAsync();
-                
                 return json;
             }
             catch (Exception ex)
@@ -34,6 +36,8 @@ namespace APIProject.Services
                 return null;
             }
         }
+
+
         public async Task<dynamic> GetChampionData(string name)
         {
             try
