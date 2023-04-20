@@ -10,7 +10,7 @@
 <div class="row">
     @foreach (KeyValuePair<string, Champion> entry in Model)
     {
-        <div class="flex flex-row col-6 col-sm-6 col-md-2 cursor-pointer">
+        <div class="flex flex-row col-6 col-xs-6 col-sm-6 col-md-2 cursor-pointer">
             <div class="d-flex">
                 <img role="button" class="mx-auto" src="@("http://ddragon.leagueoflegends.com/cdn/13.8.1/img/champion/" + entry.Value.id + ".png")"></img>
                 </div>
