@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json.Linq;
 using Microsoft.Extensions.ObjectPool;
+using Microsoft.AspNetCore.Mvc.Formatters;
 
 namespace APIProject.Models
 {
@@ -87,8 +88,8 @@ namespace APIProject.Models
             try
             {
                 // ... process the retrieved data as needed ...
-                champion = await JObject.Parse(jsonDataString)["data"].ToObject<Dictionary<string, ChampionDetail>>();
-                ChampionDetailModel champDetails = new ChampionDetailModel(champion.First().Value);
+                champion = JObject.Parse(jsonDataString)["data"].ToObject<Dictionary<string, ChampionDetail>>();
+                //ChampionDetailModel champDetails = new ChampionDetailModel(champion.First().Value);
             }
             catch (Exception ex)
             {
@@ -96,31 +97,38 @@ namespace APIProject.Models
                 Console.WriteLine($"Error: {ex.Message}");
                 return null;
             }
+
+
             // Return the processed data
+            ChampionDetailModel championDetailModel = new ChampionDetailModel();
+            championDetailModel.detail = champion.First().Value;
+            championDetailModel.FilterStringDesc();
+
+
             return champion;
         }
     }
 
     public class ChampionDetailModel
     {
-        public ChampionDetailModel(ChampionDetail details) {
-            detail = details;
-            FilterStringDesc();
-        }
-
         public ChampionDetail detail;
         public string splashImg;
         //Remove the values that im not sure what they do and replace values with correct placeholder values.
-        public string[] spellDesc;
 
-        private void FilterStringDesc()
+        public void FilterStringDesc()
         {
             string tagToRemove = "<keywordMajor>";
-            foreach(Spell s in detail.spells)
+            string tagToRemove2 = "</keywordMajor>";
+            string tagToRemove3 = "<br>";
+            string tagToRemove4 = "</ br>";
+            foreach (Spell s in detail.spells)
             {
-                while(s.description.Contains(tagToRemove))
+                while(s.tooltip.Contains(tagToRemove) || s.tooltip.Contains(tagToRemove2) || s.tooltip.Contains(tagToRemove3) || s.tooltip.Contains(tagToRemove4))
                 {
-                    s.description = s.description.Replace(tagToRemove, "");
+                    s.tooltip = s.tooltip.Replace(tagToRemove, "");
+                    s.tooltip = s.tooltip.Replace(tagToRemove2, "");
+                    s.tooltip = s.tooltip.Replace(tagToRemove3, "");
+                    s.tooltip = s.tooltip.Replace(tagToRemove4, "");
                 }
             }
         }
