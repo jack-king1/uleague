@@ -82,10 +82,13 @@ namespace APIProject.Models
             // Call the API service method to retrieve data
             dynamic jsonDataString = await riotAPIService.GetChampionDataAsync(champName);
 
+
+
             try
             {
                 // ... process the retrieved data as needed ...
-                champion = JObject.Parse(jsonDataString)["data"].ToObject<Dictionary<string, ChampionDetail>>();
+                champion = await JObject.Parse(jsonDataString)["data"].ToObject<Dictionary<string, ChampionDetail>>();
+                ChampionDetailModel champDetails = new ChampionDetailModel(champion.First().Value);
             }
             catch (Exception ex)
             {
@@ -95,6 +98,31 @@ namespace APIProject.Models
             }
             // Return the processed data
             return champion;
+        }
+    }
+
+    public class ChampionDetailModel
+    {
+        public ChampionDetailModel(ChampionDetail details) {
+            detail = details;
+            FilterStringDesc();
+        }
+
+        public ChampionDetail detail;
+        public string splashImg;
+        //Remove the values that im not sure what they do and replace values with correct placeholder values.
+        public string[] spellDesc;
+
+        private void FilterStringDesc()
+        {
+            string tagToRemove = "<keywordMajor>";
+            foreach(Spell s in detail.spells)
+            {
+                while(s.description.Contains(tagToRemove))
+                {
+                    s.description = s.description.Replace(tagToRemove, "");
+                }
+            }
         }
     }
 

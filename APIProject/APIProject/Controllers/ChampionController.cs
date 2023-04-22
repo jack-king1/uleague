@@ -38,7 +38,7 @@ namespace APIProject.Controllers
 
             dynamic jsonData = await championAPI.GetChampionDataFromApiAsync(champName);
 
-            return View();
+            return View(jsonData);
         }
     }
 }

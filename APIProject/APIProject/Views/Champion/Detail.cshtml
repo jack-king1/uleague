@@ -1,5 +1,75 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
+@model System.Collections.Generic.Dictionary<string, ChampionDetail>;
 @{
+    <div class="">
+        <img class="img-fluid w-100 rounded-3" src="@("http://ddragon.leagueoflegends.com/cdn/img/champion/splash/" + Model.First().Value.id + "_0.jpg")"></img>
+    </div>
+
+    <section class="d-flex flex-column">
+        <div class="row">
+        <div class="col-4 mt-4">
+                <h4>Passive</h4>
+                <img class="img-fluid rounded align-self-start" src="@("http://ddragon.leagueoflegends.com/cdn/13.8.1/img/passive/" + Model.First().Value.passive.image.full)" />
+
+            </div>
+            <div>@Model.First().Value.passive.description</div>
+
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-4">
+                <h4 class="flex-2">@Model.First().Value.spells[0].name</h4>
+                <img class="img-fluid rounded align-self-start" src="@("http://ddragon.leagueoflegends.com/cdn/13.8.1/img/spell/" + Model.First().Value.spells[0].image.full)" />
+            </div>
+
+            <p>@Model.First().Value.spells[0].description</p>
+            <p>@Model.First().Value.spells[0].tooltip</p>
+            <div class="">
+                <div>Cooldown Per Level: </div>
+                <div>@Model.First().Value.spells[0].cooldownBurn </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-4">
+            <h4 class="flex-2">@Model.First().Value.spells[1].name</h4>
+            <img class="img-fluid rounded align-self-start" src="@("http://ddragon.leagueoflegends.com/cdn/13.8.1/img/spell/" + Model.First().Value.spells[1].image.full)" /></div>
+
+            <p>@Model.First().Value.spells[1].description</p>
+            <p>@Model.First().Value.spells[1].tooltip</p>
+            <div class="">
+                <div>Cooldown Per Level: </div>
+                <div>@Model.First().Value.spells[1].cooldownBurn </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-4">
+                <h4 class="flex-2">@Model.First().Value.spells[1].name</h4>
+                <img class="img-fluid rounded align-self-start" src="@("http://ddragon.leagueoflegends.com/cdn/13.8.1/img/spell/" + Model.First().Value.spells[2].image.full)" />
+            </div>
+
+            <p>@Model.First().Value.spells[2].description</p>
+            <p>@Model.First().Value.spells[2].tooltip</p>
+            <div class="">
+                <div>Cooldown Per Level: </div>
+                <div>@Model.First().Value.spells[2].cooldownBurn </div>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-4">
+                <h4 class="flex-2">@Model.First().Value.spells[3].name</h4>
+                <img class="img-fluid rounded align-self-start" src="@("http://ddragon.leagueoflegends.com/cdn/13.8.1/img/spell/" + Model.First().Value.spells[3].image.full)" />
+            </div>
+
+            <p>@Model.First().Value.spells[3].description</p>
+            <p>@Model.First().Value.spells[3].tooltip</p>
+            <div class="">
+                <div>Cooldown Per Level: </div>
+                <div>@Model.First().Value.spells[3].cooldownBurn </div>
+            </div>
+        </div>
+    </section>
 }
