@@ -18,16 +18,27 @@ namespace APIProject.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Test()
+        public async Task<IActionResult> All()
         {
             // Create an instance of the model
             var championAPI = new ChampionAPI();
 
             // Call the model method to retrieve data from the API
-            dynamic jsonData = await championAPI.GetAllChampionDataFromApi();
+            dynamic jsonData = await championAPI.GetAllChampionDataFromApiAsync();
 
             // Pass the retrieved data to the view
+            
+            
             return View(jsonData);
+        }
+
+        public async Task<IActionResult> Detail(string champName)
+        {
+            var championAPI = new ChampionAPI();
+
+            dynamic jsonData = await championAPI.GetChampionDataFromApiAsync(champName);
+
+            return View();
         }
     }
 }

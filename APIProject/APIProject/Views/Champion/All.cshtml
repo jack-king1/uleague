@@ -1,0 +1,31 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model System.Collections.Generic.Dictionary<string, Champion>;
+@{
+}
+
+<h1>Champion Test Page</h1>
+
+<div class="row">
+    @foreach (KeyValuePair<string, Champion> entry in Model)
+    {
+        <div class="flex flex-row col-6 col-xs-6 col-sm-6 col-md-2 cursor-pointer">
+            <div class="d-flex">
+                <img onclick="redirectToAnotherPage('@entry.Value.id') role="button" class="mx-auto" src="@("http://ddragon.leagueoflegends.com/cdn/13.8.1/img/champion/" + entry.Value.id + ".png")"></img>
+                </div>
+            <div>@entry.Value.name</div>
+        </div>
+    }
+</div>
+
+<script>
+    // Function to redirect to another action with parameter
+    function redirectToAnotherPage(champName) {
+        // Construct the URL for the redirect with the parameter
+        var url = '/Champion/Detail?champName=' + champName;
+
+        // Redirect to another action in the same controller with the parameter
+        window.location.href = url;
+    }
+</script>

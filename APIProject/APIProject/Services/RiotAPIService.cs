@@ -1,6 +1,7 @@
 ﻿using System.Net.Http;
 using System.Xml.Linq;
 using Newtonsoft.Json;
+using System.IO;
 
 namespace APIProject.Services
 {
@@ -16,18 +17,38 @@ namespace APIProject.Services
         }
 
         //Get all league champion data.
-        public async Task<dynamic> GetAllChampionData()
+        public async Task<dynamic> GetAllChampionDataAsync()
         {
+            //try
+            //{
+                
+            //    string apiUrl = $"{localDir}13.8.1/data/en_GB/champion.json"; // Replace with your API URL
+            //    HttpResponseMessage response = await _httpClient.GetAsync(apiUrl);
+            //    response.EnsureSuccessStatusCode(); // Throw an exception if response is not successful
+
+            //    //json string which can be converted into c# object using deserialization.
+            //    string json = await response.Content.ReadAsStringAsync();
+            //    return json;
+            //}
+            //catch (Exception ex)
+            //{
+            //    // Handle any exceptions
+            //    Console.WriteLine($"Error: {ex.Message}");
+            //    return null;
+            //}
+
             try
             {
-                
-                string apiUrl = $"{localDir}13.8.1/data/en_GB/champion.json"; // Replace with your API URL
-                HttpResponseMessage response = await _httpClient.GetAsync(apiUrl);
-                response.EnsureSuccessStatusCode(); // Throw an exception if response is not successful
 
-                //json string which can be converted into c# object using deserialization.
-                string json = await response.Content.ReadAsStringAsync();
-                return json;
+                string apiUrl = $"{localDir}13.8.1/data/en_GB/champion.json"; // Replace with your API URL
+                using (StreamReader reader = new StreamReader(apiUrl))
+                {
+                    string json = reader.ReadToEndAsync().Result; // Read the entire file content as a string
+                    //MyObject myObject = JsonConvert.DeserializeObject<MyObject>(json); // Deserialize the JSON string into an object
+                    // Do something with the deserialized object (e.g., bind it to a data source, display it in UI, etc.)
+                    return json;
+                }
+                
             }
             catch (Exception ex)
             {
@@ -38,16 +59,19 @@ namespace APIProject.Services
         }
 
 
-        public async Task<dynamic> GetChampionData(string name)
+        public async Task<dynamic> GetChampionDataAsync(string name)
         {
             try
             {
-                string apiUrl = $"http://ddragon.leagueoflegends.com/cdn/13.8.1/data/en_US/champion/{name}.json"; // Replace with your API URL
-                HttpResponseMessage response = await _httpClient.GetAsync(apiUrl);
-                response.EnsureSuccessStatusCode(); // Throw an exception if response is not successful
+               string apiUrl = $"{localDir}13.8.1/data/en_GB/champion/{name}.json"; // Replace with your API URL
+               using (StreamReader reader = new StreamReader(apiUrl))
+                {
+                    string json = reader.ReadToEndAsync().Result; // Read the entire file content as a string
+                    //MyObject myObject = JsonConvert.DeserializeObject<MyObject>(json); // Deserialize the JSON string into an object
+                    // Do something with the deserialized object (e.g., bind it to a data source, display it in UI, etc.)
+                    return json;
+                }
 
-                string json = await response.Content.ReadAsStringAsync();
-                return json;
             }
             catch (Exception ex)
             {
