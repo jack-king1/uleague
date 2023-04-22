@@ -5,25 +5,42 @@
 @{
 }
 
-<h1>Champion Test Page</h1>
-
 <div class="row">
     @foreach (KeyValuePair<string, Champion> entry in Model)
     {
-        <div class="flex flex-row col-6 col-xs-6 col-sm-6 col-md-2 cursor-pointer">
+        <div class="flex flex-row col-6 col-xs-6 col-sm-6 col-md-2 cursor-pointer mb-3">
             <div class="d-flex">
-                <img onclick="redirectToAnotherPage('@entry.Value.id') role="button" class="mx-auto" src="@("http://ddragon.leagueoflegends.com/cdn/13.8.1/img/champion/" + entry.Value.id + ".png")"></img>
+                <img data-custom-value='@entry.Value.id' id="champBtn" role="button" class="champBtn mx-auto" src="@("http://ddragon.leagueoflegends.com/cdn/13.8.1/img/champion/" + entry.Value.id + ".png")"></img>
                 </div>
-            <div>@entry.Value.name</div>
+            <div class="text-center fw-bold">@entry.Value.name</div>
         </div>
     }
 </div>
 
 <script>
+    //document.getElementById('champBtn').addEventListener('click', function (e) {
+    //    let clickedDiv = e.target;
+    //    let value = clickedDiv.getAttribute('data-custom-value');
+        
+    //    // Add your custom logic here for what should happen when the div is clicked
+    //    redirectToAnotherPage(value);
+    //});
+
+    let clickableDivs = document.querySelectorAll('.champBtn');
+    clickableDivs.forEach(function (div) {
+        div.addEventListener('click', function (e) {
+            let clickedDiv = e.target;
+            let value = clickedDiv.getAttribute('data-custom-value');
+            redirectToAnotherPage(value);
+        });
+    });
+
+
     // Function to redirect to another action with parameter
     function redirectToAnotherPage(champName) {
         // Construct the URL for the redirect with the parameter
-        var url = '/Champion/Detail?champName=' + champName;
+        console.log("Champion CLicked was: ", champName);
+        let url = '/Champion/Detail?champName=' + champName;
 
         // Redirect to another action in the same controller with the parameter
         window.location.href = url;

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json.Linq;
 using Microsoft.Extensions.ObjectPool;
 using Microsoft.AspNetCore.Mvc.Formatters;
+using System.Text.RegularExpressions;
 
 namespace APIProject.Models
 {
@@ -105,7 +106,7 @@ namespace APIProject.Models
             championDetailModel.FilterStringDesc();
 
 
-            return champion;
+            return championDetailModel;
         }
     }
 
@@ -121,15 +122,27 @@ namespace APIProject.Models
             string tagToRemove2 = "</keywordMajor>";
             string tagToRemove3 = "<br>";
             string tagToRemove4 = "</ br>";
+            string tagToRemove5 = "<br />";
+            string tagToRemove6 = "<br><br>";
+
             foreach (Spell s in detail.spells)
             {
-                while(s.tooltip.Contains(tagToRemove) || s.tooltip.Contains(tagToRemove2) || s.tooltip.Contains(tagToRemove3) || s.tooltip.Contains(tagToRemove4))
+                while (s.tooltip.Contains(tagToRemove) || s.tooltip.Contains(tagToRemove2) || s.tooltip.Contains(tagToRemove3) || s.tooltip.Contains(tagToRemove4)
+                    || s.tooltip.Contains(tagToRemove5))
                 {
                     s.tooltip = s.tooltip.Replace(tagToRemove, "");
                     s.tooltip = s.tooltip.Replace(tagToRemove2, "");
                     s.tooltip = s.tooltip.Replace(tagToRemove3, "");
                     s.tooltip = s.tooltip.Replace(tagToRemove4, "");
+                    s.tooltip = s.tooltip.Replace(tagToRemove5, "");
                 }
+            }
+
+            // Use a regular expression with word boundary to replace the substring for each input
+            string pattern = @"<br><br>"; // pattern to match "<br><br>"
+            foreach (Spell input in detail.spells)
+            {
+                input.description = Regex.Replace(input.tooltip, pattern, " ", RegexOptions.IgnoreCase);
             }
         }
     }

@@ -1,75 +1,77 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
-@model System.Collections.Generic.Dictionary<string, ChampionDetail>;
+@model ChampionDetailModel;
 @{
     <div class="">
-        <img class="img-fluid w-100 rounded-3" src="@("http://ddragon.leagueoflegends.com/cdn/img/champion/splash/" + Model.First().Value.id + "_0.jpg")"></img>
+        <img class="img-fluid w-100 rounded-3" src="@("http://ddragon.leagueoflegends.com/cdn/img/champion/splash/" + Model.detail.id + "_0.jpg")"></img>
+    </div>
+    <div class="fs-1">@Model.detail.name</div>
+    <div class="fs-2">@Model.detail.title</div>
+    <div class="d-flex flex-column flex-lg-row justify-content-between mt-2">
+        <div class="d-flex flex-row me-3">
+            <div class="me-3 fw-bold flex-fill">Attack </div>
+            @for (int i = 0; i < Model.detail.info.attack; i++)
+            {
+                <div style="width: 20px; height:10px" class="bg-primary me-1 rounded-3 my-auto justify-content-end">
+
+                </div>
+            }
+        </div>
+        <div class="d-flex flex-row me-3">
+            <div class="me-3 fw-bold flex-fill">Defense </div>
+            @for (int i = 0; i < Model.detail.info.defense; i++)
+            {
+                <div style="width: 20px; height:10px" class="bg-primary me-1 rounded-pill my-auto">
+                </div>
+            }
+        </div>
+        <div class="d-flex flex-row me-3">
+            <div class="me-3 fw-bold flex-fill">Magic </div>
+            @for (int i = 0; i < Model.detail.info.magic; i++)
+            {
+                <div style="width: 20px; height:10px" class="bg-primary me-1 rounded-3 my-auto">
+                </div>
+            }
+        </div>
+        <div class="d-flex flex-row me-3">
+            <div class="me-3 fw-bold flex-fill">Difficulty </div>
+            @for (int i = 0; i < Model.detail.info.difficulty; i++)
+            {
+                <div style="width: 20px; height:10px" class="bg-primary me-1 rounded-3 my-auto">
+                </div>
+            }
+        </div>
     </div>
 
-    <section class="d-flex flex-column">
-        <div class="row">
-        <div class="col-4 mt-4">
-                <h4>Passive</h4>
-                <img class="img-fluid rounded align-self-start" src="@("http://ddragon.leagueoflegends.com/cdn/13.8.1/img/passive/" + Model.First().Value.passive.image.full)" />
+    <section class="text-left fs-4 mt-3">@Model.detail.lore</section>
 
+    <section class="d-flex flex-column flex-md-row justify-content-around mt-4">
+        <div class="d-flex flex-column justify-content-start">
+            <h4 class="text-left text-md-center d-md-none">Passive</h4>
+            <div class="justify-content-start"><img class="img-fluid rounded align-self-start mx-auto" src="@("http://ddragon.leagueoflegends.com/cdn/13.8.1/img/passive/" + Model.detail.passive.image.full)" />
             </div>
-            <div>@Model.First().Value.passive.description</div>
-
+            
         </div>
 
-        <div class="row mt-4">
-            <div class="col-4">
-                <h4 class="flex-2">@Model.First().Value.spells[0].name</h4>
-                <img class="img-fluid rounded align-self-start" src="@("http://ddragon.leagueoflegends.com/cdn/13.8.1/img/spell/" + Model.First().Value.spells[0].image.full)" />
-            </div>
-
-            <p>@Model.First().Value.spells[0].description</p>
-            <p>@Model.First().Value.spells[0].tooltip</p>
-            <div class="">
-                <div>Cooldown Per Level: </div>
-                <div>@Model.First().Value.spells[0].cooldownBurn </div>
-            </div>
+        <div class="d-flex flex-column">
+            <h4 class="flex-2 text-center d-md-none">@Model.detail.spells[0].name</h4>
+            <img class="img-fluid rounded align-self-start mx-auto" src="@("http://ddragon.leagueoflegends.com/cdn/13.8.1/img/spell/" + Model.detail.spells[0].image.full)" />
         </div>
 
-        <div class="row mt-4">
-            <div class="col-4">
-            <h4 class="flex-2">@Model.First().Value.spells[1].name</h4>
-            <img class="img-fluid rounded align-self-start" src="@("http://ddragon.leagueoflegends.com/cdn/13.8.1/img/spell/" + Model.First().Value.spells[1].image.full)" /></div>
-
-            <p>@Model.First().Value.spells[1].description</p>
-            <p>@Model.First().Value.spells[1].tooltip</p>
-            <div class="">
-                <div>Cooldown Per Level: </div>
-                <div>@Model.First().Value.spells[1].cooldownBurn </div>
-            </div>
+        <div class="d-flex flex-column">
+            <h4 class="flex-2 text-center text-md-start d-md-none">@Model.detail.spells[1].name</h4>
+            <img class="img-fluid rounded align-self-start mx-auto h-100" src="@("http://ddragon.leagueoflegends.com/cdn/13.8.1/img/spell/" + Model.detail.spells[1].image.full)" />
         </div>
 
-        <div class="row mt-4">
-            <div class="col-4">
-                <h4 class="flex-2">@Model.First().Value.spells[1].name</h4>
-                <img class="img-fluid rounded align-self-start" src="@("http://ddragon.leagueoflegends.com/cdn/13.8.1/img/spell/" + Model.First().Value.spells[2].image.full)" />
-            </div>
-
-            <p>@Model.First().Value.spells[2].description</p>
-            <p>@Model.First().Value.spells[2].tooltip</p>
-            <div class="">
-                <div>Cooldown Per Level: </div>
-                <div>@Model.First().Value.spells[2].cooldownBurn </div>
-            </div>
+        <div class="d-flex flex-column">
+            <h4 class="flex-2 text-center d-md-none">@Model.detail.spells[2].name</h4>
+            <img class="img-fluid rounded align-self-start mx-auto" src="@("http://ddragon.leagueoflegends.com/cdn/13.8.1/img/spell/" + Model.detail.spells[2].image.full)" />
         </div>
-        <div class="row mt-4">
-            <div class="col-4">
-                <h4 class="flex-2">@Model.First().Value.spells[3].name</h4>
-                <img class="img-fluid rounded align-self-start" src="@("http://ddragon.leagueoflegends.com/cdn/13.8.1/img/spell/" + Model.First().Value.spells[3].image.full)" />
-            </div>
 
-            <p>@Model.First().Value.spells[3].description</p>
-            <p>@Model.First().Value.spells[3].tooltip</p>
-            <div class="">
-                <div>Cooldown Per Level: </div>
-                <div>@Model.First().Value.spells[3].cooldownBurn </div>
-            </div>
+        <div class="d-flex flex-column">
+            <h4 class="flex-2 text-center d-md-none">@Model.detail.spells[3].name</h4>
+            <img class="img-fluid rounded align-self-start mx-auto" src="@("http://ddragon.leagueoflegends.com/cdn/13.8.1/img/spell/" + Model.detail.spells[3].image.full)" />
         </div>
     </section>
 }
