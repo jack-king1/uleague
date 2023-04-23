@@ -11,6 +11,8 @@ namespace APIProject.Services
 
         private HttpClient _httpClient;
 
+        private string riotAPIKey = "RGAPI-55a5843f-9535-4fb1-acf2-51e08ebf3438";
+
         public RiotAPIService()
         {
             _httpClient = new HttpClient();
@@ -72,6 +74,29 @@ namespace APIProject.Services
                     return json;
                 }
 
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions
+                Console.WriteLine($"Error: {ex.Message}");
+                return null;
+            }
+        }
+
+        public async Task<dynamic> GetSummonerDataByName(string name, string region = "euw1")
+        {
+
+            string apiUrl = $"https://{region}.api.riotgames.com/lol/summoner/v4/summoners/by-name/{name}?api_key={riotAPIKey}"; // Replace with your API URL
+
+            try
+            {
+
+                HttpResponseMessage response = await _httpClient.GetAsync(apiUrl);
+                response.EnsureSuccessStatusCode(); // Throw an exception if response is not successful
+
+                //json string which can be converted into c# object using deserialization.
+                string json = await response.Content.ReadAsStringAsync();
+                return json;
             }
             catch (Exception ex)
             {

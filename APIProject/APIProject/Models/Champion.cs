@@ -49,7 +49,7 @@ namespace APIProject.Models
 
     }
 
-    public class ChampionAPI
+    public class ChampionAPIModel
     {
         public async Task<dynamic> GetAllChampionDataFromApiAsync()
         {

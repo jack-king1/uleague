@@ -1,0 +1,100 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model SummonerDataWithImg
+@{
+}
+
+<!-- HTML Code -->
+<div class="d-flex justify-content-center align-items-center">
+    <form class="form-inline" method="post" action="/SummonerData/Summoner" id="searchForm">
+        <div class="input-group">
+            <input class="form-control form-control-lg py-3" type="search" placeholder="Search" aria-label="Search" name="searchQuery">
+            <div class="input-group-append">
+                <button class="btn btn-primary btn-lg py-3 px-4" type="submit">Search</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+
+
+@if (Model != null)
+{
+    <section class="d-flex justify-content-center m-4 ">
+        <div class="mx-auto text-center">
+            <div class="imgContainer">
+                <img class="rounded-circle w-100 h-100 img-fluid" src="@Model.profileImgURL" />
+            </div>
+
+            <div class="fw-bold fs-2">@Model.data.name</div>
+            <div class="fw-bold fs-3">Lv. @Model.data.summonerLevel</div>
+        </div>
+    </section>
+
+    <section>
+        <h2>Match History</h2>
+
+    </section>
+}
+
+
+
+
+
+<!-- CSS Code -->
+<style>
+.container {
+  margin-top: 20px;
+}
+
+.imgContainer{
+    width: 200px;
+    height: 200px;
+}
+
+.form-inline {
+  display: flex;
+  justify-content: center;
+}
+
+.input-group {
+  flex-grow: 1;
+  max-width: 500px; /* Set max-width to desired length */
+}
+
+.form-control {
+  width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.btn {
+  margin-left: 0;
+  margin-right: 0;
+}
+</style>
+
+
+<script>
+    // Get the form element by ID
+    var form = document.getElementById('searchForm');
+
+    // Add a submit event listener to the form
+    form.addEventListener('submit', function (event) {
+        // Prevent the form from submitting
+        event.preventDefault();
+
+        // Get the searchQuery value from the form
+        var name = form.elements['searchQuery'].value;
+
+        // Modify the action URL to append the searchQuery as a query string
+        form.action = '/SummonerData/Summoner?name=' + encodeURIComponent(name);
+
+        // Submit the form
+        form.submit();
+    });
+</script>
+
+

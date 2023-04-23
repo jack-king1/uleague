@@ -21,7 +21,7 @@ namespace APIProject.Controllers
         public async Task<IActionResult> All()
         {
             // Create an instance of the model
-            var championAPI = new ChampionAPI();
+            var championAPI = new ChampionAPIModel();
 
             // Call the model method to retrieve data from the API
             dynamic jsonData = await championAPI.GetAllChampionDataFromApiAsync();
@@ -34,7 +34,7 @@ namespace APIProject.Controllers
 
         public async Task<IActionResult> Detail(string champName)
         {
-            var championAPI = new ChampionAPI();
+            var championAPI = new ChampionAPIModel();
 
             dynamic jsonData = await championAPI.GetChampionDataFromApiAsync(champName);
 
