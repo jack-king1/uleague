@@ -20,7 +20,7 @@ namespace APIProject.Models
 
     public class MatchIDUsingpuuid
     {
-
+        public List<string> MatchHistoryIDList { get; set; }
     }
 
     public class MatchesListData
