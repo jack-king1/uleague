@@ -400,13 +400,50 @@ namespace APIProject.Models
     }
 }
 
+    public class RuneData
+    {
+        public class RuneDataRoot
+        {
+            public int? id { get; set; }
+            public string key { get; set; }
+            public string icon { get; set; }
+            public string name { get; set; }
+            public List<Slot> slots { get; set; }
+        }
+
+        public class Rune
+        {
+            public int? id { get; set; }
+            public string key { get; set; }
+            public string icon { get; set; }
+            public string name { get; set; }
+            public string shortDesc { get; set; }
+            public string longDesc { get; set; }
+        }
+
+        public class Slot
+        {
+            public List<Rune> runes { get; set; }
+        }
+    }
+
     public class SummonerDataAll
     {
         public SummonerData data { get; set; }
         public string profileImgURL { get; set; }
-        public List<RootGameData> matchGameDataList { get; set; } 
+        public List<RootGameData> matchGameDataList { get; set; }
 
         public List<Participant> playerMatchDataList { get; set; }
+        public List<string> summonerSpellList = new List<string>(new string[] { "SummonerBarrier", "SummonerBoost", "SummonerTeleport",
+            "SummonerFlash", "SummonerExhaust", "SummonerHaste" ,
+            "SummonerHeal", "SummonerMana", "SummonerPoroRecall",  "SummonerPoroThrow",
+            "SummonerSmite", "SummonerSnowball",  "SummonerSnowURFSnowball_Mark", "SummonerDot",
+        });
+        public Dictionary<string, string> keystones = new Dictionary<string, string>
+        {
+            {"8112", "Sorcery/ArcaneComet/ArcaneComet" },
+        };
+
     }
 
 

@@ -11,7 +11,7 @@ namespace APIProject.Services
 
         private HttpClient _httpClient;
 
-        private string riotAPIKey = "RGAPI-55a5843f-9535-4fb1-acf2-51e08ebf3438";
+        private string riotAPIKey = "RGAPI-1297576f-694a-4996-99c7-db4d8cd7d63a";
 
         public RiotAPIService()
         {
@@ -106,7 +106,7 @@ namespace APIProject.Services
             }
         }
 
-        public async Task<dynamic> GetSummonerMatchHistoryListByPuuid(string puuid, int count = 20, string region = "europe")
+        public async Task<dynamic> GetSummonerMatchHistoryListByPuuid(string puuid, int count = 2, string region = "europe")
         {
 
             string apiUrl = $"https://{region}.api.riotgames.com/lol/match/v5/matches/by-puuid/{puuid}/ids?start=0&count={count}&api_key={riotAPIKey}"; // Replace with your API URL

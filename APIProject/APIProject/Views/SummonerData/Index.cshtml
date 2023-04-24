@@ -50,8 +50,8 @@
                         <div class="d-flex">
                                 <div class="champIconContainer"><img class="rounded-circle w-100 h-100 img-fluid" src="http://ddragon.leagueoflegends.com/cdn/img/champion/tiles/@(Model.playerMatchDataList[i].championName)_0.jpg" /></div>
                             <div class="ms-4">
-                                <div class="summonerPerksContainer"><img class="rounded w-100 h-100 img-fluid" src="http://ddragon.leagueoflegends.com/cdn/13.8.1/img/spell/SummonerFlash.png" /></div>
-                                <div class="summonerPerksContainer"><img class="rounded w-100 h-100 img-fluid" src="http://ddragon.leagueoflegends.com/cdn/13.8.1/img/spell/SummonerTeleport.png" /></div>
+                                <div class="summonerPerksContainer"><img class="rounded w-100 h-100 img-fluid" src="http://ddragon.leagueoflegends.com/cdn/13.8.1/img/spell/@(Model.summonerSpellList[(int)Model.playerMatchDataList[i].summoner1Id - 1]).png" /></div>
+                                <div class="summonerPerksContainer"><img class="rounded w-100 h-100 img-fluid" src="http://ddragon.leagueoflegends.com/cdn/13.8.1/img/spell/@(Model.summonerSpellList[(int)Model.playerMatchDataList[i].summoner2Id - 1]).png" /></div>
                             </div>
                             <div class="">
                                 <div class="summonerPerksContainer"><img class="rounded w-100 h-100 img-fluid" src="http://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/Sorcery/ArcaneComet/ArcaneComet.png" /></div>
@@ -67,24 +67,30 @@
                         </div>
                     </div>
                 </div>
-                <div class="participants d-flex flex-row">
-                    <ul class="myTeam">
-                        <li class="d-flex flex-row">
-                            <div class="summonerDetailsContainer me-1">
-                                <img class="rounded w-100 h-100" src="http://ddragon.leagueoflegends.com/cdn/img/champion/tiles/Aatrox_0.jpg" />
-                            </div>
-                            <div class="fs-6 w-100"></div>
-                        </li>
-                    </ul>
-                    <ul class="enemyTeam">
-                        <li class="d-flex flex-row">
-                            <div class="summonerDetailsContainer me-1">
-                                <img class="rounded w-100 h-100" src="http://ddragon.leagueoflegends.com/cdn/img/champion/tiles/Aatrox_0.jpg" />
-                            </div>
-                            <div class=" fs-6 w-100">Summoner Name</div>
-                        </li>
-                    </ul>
-                </div>
+                    <section class="participants d-flex flex-row justify-content-start">
+                        <div class="team1 d-flex flex-column teamsBox">
+                        @for(int j = 0; j < 5; j++)
+                            {
+                                <div class="d-flex flex-row justify-content-start w-100 ">
+                                    <div class="summonerDetailsContainer ">
+                                        <img class="rounded w-100 h-100 " src="http://ddragon.leagueoflegends.com/cdn/img/champion/tiles/@(@Model.matchGameDataList[i].info.participants[j].championName)_0.jpg" />
+                                    </div>
+                                    <div class="w-100 summonerListFontSize">@Model.matchGameDataList[i].info.participants[j].summonerName</div>
+                                </div>
+                            }
+                    </div>
+                    <div class="team2 teamsBox">
+                            @for (int k = 0; k < 5; k++)
+                            {
+                                <div class="d-flex flex-row">
+                                    <div class="summonerDetailsContainer me-1">
+                                        <img class="rounded w-100 h-100" src="http://ddragon.leagueoflegends.com/cdn/img/champion/tiles/@(@Model.matchGameDataList[i].info.participants[5+k].championName)_0.jpg" />
+                                    </div>
+                                    <div class="w-100 summonerListFontSize">@Model.matchGameDataList[i].info.participants[5+k].summonerName</div>
+                                </div>
+                            }
+                    </div>
+                </section>
             </div>
             }
         </div>
@@ -98,6 +104,9 @@
 
 <!-- CSS Code -->
 <style>
+.teamsBox {
+        min-width: 200px; /* Set minimum width to 200px */
+    }
 .container {
   margin-top: 20px;
 }
@@ -118,10 +127,14 @@
 }
 
 .summonerDetailsContainer {
-    min-width: 24px;
-    max-width: 24px;
-    min-height: 24px; 
-    max-height: 24px;
+    min-width: 18px;
+    max-width: 18px;
+    min-height: 18px; 
+    max-height: 18px;
+}
+
+.summonerListFontSize{
+    font-size: 12px;
 }
 
 .form-inline {
