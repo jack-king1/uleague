@@ -1,7 +1,7 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
-@model SummonerDataWithImg
+@model SummonerDataAll
 @{
 }
 
@@ -36,7 +36,9 @@
     <section>
         <h2>Match History</h2>
         <div class="d-flex flex-column">
-            <div class="d-flex flex-row justify-content-between">
+            @for(int i = 0; i < Model.matchGameDataList.Count; i++)
+            {
+                <div class="d-flex flex-row justify-content-between">
                 <div class="game">
                     <div class="fw-bold">Ranked Solo</div>
                     <div class="">19 days ago</div>
@@ -46,7 +48,7 @@
                 <div class="info">
                     <div class="details d-flex">
                         <div class="d-flex">
-                            <div class="champIconContainer"><img class="rounded-circle w-100 h-100 img-fluid" src="http://ddragon.leagueoflegends.com/cdn/img/champion/tiles/Aatrox_0.jpg" /></div>
+                                <div class="champIconContainer"><img class="rounded-circle w-100 h-100 img-fluid" src="http://ddragon.leagueoflegends.com/cdn/img/champion/tiles/@(Model.playerMatchDataList[i].championName)_0.jpg" /></div>
                             <div class="ms-4">
                                 <div class="summonerPerksContainer"><img class="rounded w-100 h-100 img-fluid" src="http://ddragon.leagueoflegends.com/cdn/13.8.1/img/spell/SummonerFlash.png" /></div>
                                 <div class="summonerPerksContainer"><img class="rounded w-100 h-100 img-fluid" src="http://ddragon.leagueoflegends.com/cdn/13.8.1/img/spell/SummonerTeleport.png" /></div>
@@ -65,12 +67,26 @@
                         </div>
                     </div>
                 </div>
-                <div class="participants">
-                    <ul class="myTeam"></ul>
-                    <ul class="enemyTeam"></ul>
+                <div class="participants d-flex flex-row">
+                    <ul class="myTeam">
+                        <li class="d-flex flex-row">
+                            <div class="summonerDetailsContainer me-1">
+                                <img class="rounded w-100 h-100" src="http://ddragon.leagueoflegends.com/cdn/img/champion/tiles/Aatrox_0.jpg" />
+                            </div>
+                            <div class="fs-6 w-100"></div>
+                        </li>
+                    </ul>
+                    <ul class="enemyTeam">
+                        <li class="d-flex flex-row">
+                            <div class="summonerDetailsContainer me-1">
+                                <img class="rounded w-100 h-100" src="http://ddragon.leagueoflegends.com/cdn/img/champion/tiles/Aatrox_0.jpg" />
+                            </div>
+                            <div class=" fs-6 w-100">Summoner Name</div>
+                        </li>
+                    </ul>
                 </div>
             </div>
-
+            }
         </div>
 
     </section>
@@ -99,6 +115,13 @@
 .summonerPerksContainer{
     width: 32px;
     height: 32px;
+}
+
+.summonerDetailsContainer {
+    min-width: 24px;
+    max-width: 24px;
+    min-height: 24px; 
+    max-height: 24px;
 }
 
 .form-inline {

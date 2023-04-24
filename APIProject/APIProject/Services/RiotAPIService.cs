@@ -105,5 +105,52 @@ namespace APIProject.Services
                 return null;
             }
         }
+
+        public async Task<dynamic> GetSummonerMatchHistoryListByPuuid(string puuid, int count = 20, string region = "europe")
+        {
+
+            string apiUrl = $"https://{region}.api.riotgames.com/lol/match/v5/matches/by-puuid/{puuid}/ids?start=0&count={count}&api_key={riotAPIKey}"; // Replace with your API URL
+
+            try
+            {
+
+                HttpResponseMessage response = await _httpClient.GetAsync(apiUrl);
+                response.EnsureSuccessStatusCode(); // Throw an exception if response is not successful
+
+                //json string which can be converted into c# object using deserialization.
+                string json = await response.Content.ReadAsStringAsync();
+                return json;
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions
+                Console.WriteLine($"Error: {ex.Message}");
+                return null;
+            }
+        }
+
+        public async Task<dynamic> GetSummonerMatchDataByMatchID(string matchID, string region = "europe")
+        {
+
+            string apiUrl = $"https://{region}.api.riotgames.com/lol/match/v5/matches/{matchID}?api_key={riotAPIKey}"; // Replace with your API URL
+
+            try
+            {
+
+                HttpResponseMessage response = await _httpClient.GetAsync(apiUrl);
+                response.EnsureSuccessStatusCode(); // Throw an exception if response is not successful
+
+                //json string which can be converted into c# object using deserialization.
+                string json = await response.Content.ReadAsStringAsync();
+                return json;
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions
+                Console.WriteLine($"Error: {ex.Message}");
+                return null;
+            }
+        }
+
     }
 }
