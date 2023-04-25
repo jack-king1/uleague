@@ -1,8 +1,10 @@
 ﻿using APIProject.Controllers;
 using APIProject.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.TagHelpers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Globalization;
 using static APIProject.Models.MatchGameData;
 
 namespace APIProject.Models
@@ -935,7 +937,7 @@ namespace APIProject.Models
             var riotAPIService = new RiotAPIService();
 
             //Check if global data is available
-            if(GlobalSummonerData.SummonerSpellData == null || GlobalSummonerData.RuneData == null)
+            if (GlobalSummonerData.SummonerSpellData == null || GlobalSummonerData.RuneData == null)
             {
                 GlobalSummonerData.SummonerSpellData = new SummonerSpellData.Root();
                 GlobalSummonerData.RuneData = new List<RuneData.RuneDataRoot>();
@@ -974,7 +976,7 @@ namespace APIProject.Models
 
             // Call the API service method to retrieve data
             dynamic jsonSummonerInfo = await riotAPIService.GetSummonerDataByName(summoner);
-            
+
             try
             {
                 // ... process the retrieved data as needed ...
@@ -1000,8 +1002,8 @@ namespace APIProject.Models
                 Console.WriteLine($"Error: {ex.Message}");
                 return null;
             }
-            
-            foreach(string matchDataID in ids)
+
+            foreach (string matchDataID in ids)
             {
                 dynamic matchDataJson = await riotAPIService.GetSummonerMatchDataByMatchID(matchDataID);
                 try
@@ -1025,31 +1027,43 @@ namespace APIProject.Models
             package.data = summonerData;
             package.profileImgURL = profileImgURL + package.data.profileIconId + ".png";
             package.matchGameDataList = matchGameDataList;
-            foreach(RootGameData rgd in package.matchGameDataList)
+            foreach (RootGameData rgd in package.matchGameDataList)
             {
-                for(int i = 0; i < rgd.info.participants.Count; i++)
+                for (int i = 0; i < rgd.info.participants.Count; i++)
                 {
                     if (rgd.info.participants[i].puuid == package.data.puuid)
                     {
                         thisPlayersMatchData.Add(rgd.info.participants[i]);
-                        primaryRuneListID.Add(rgd.info.participants[i].perks.styles[0].style);
+                        primaryRuneListID.Add(rgd.info.participants[i].perks.styles[0].selections[0].perk);
                         secondaryRuneListID.Add(rgd.info.participants[i].perks.styles[1].style);
                         break;
                     }
                 }
             }
 
-            for(int primary = 0; primary < primaryRuneListID.Count; primary++)
+            package.secondaryRunePath = new List<string>();
+            package.primaryRunePath = new List<string>();
+
+            for (int primary = 0; primary < primaryRuneListID.Count; primary++)
             {
-                if (GlobalSummonerData.RuneData[primary].id == primaryRuneListID[primary])
+                foreach (RuneData.RuneDataRoot rd in GlobalSummonerData.RuneData)
                 {
-                    package.primaryRunePath.Add(GlobalSummonerData.RuneData[primary].icon);
+                    foreach (var rune in rd.slots[0].runes)
+                    {
+                        if (rune.id == primaryRuneListID[primary])
+                        {
+                            package.primaryRunePath.Add(rune.icon);
+                        }
+                    }
+
+                    if (rd.id == secondaryRuneListID[primary])
+                    {
+                        package.secondaryRunePath.Add(GlobalSummonerData.RuneData[primary].icon);
+                    }
                 }
             }
-
             package.playerMatchDataList = thisPlayersMatchData;
-
-            // Return the processed data
+            // Return the processed dat   
             return package;
         }
 
