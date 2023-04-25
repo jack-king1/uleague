@@ -406,7 +406,12 @@ namespace APIProject.Models
         public int? kills { get; set; }
     }
 }
-
+    public class KDA
+    {
+        public List<int> kills { get; set; }
+        public List<int> deaths { get; set; }
+        public List<int> assists { get; set; }
+    }
 
     public class SummonerDataAll
     {
@@ -431,7 +436,12 @@ namespace APIProject.Models
 
         public List<string> sincePlayed {  get; set; }
         public List<string> didWin { get; set;  }
-
+        public List<string> kdaRatio { get; set; }
+        public KDA kda { get; set; }
+        public List<string> killParticipationPercentage { get; set; }
+        public List<int?> controlWardCount { get; set; }
+        public List<string> creepScore { get; set; }
+        public List<string> playerRank { get; set; }
 
     }
 
@@ -1040,11 +1050,22 @@ namespace APIProject.Models
             package.didWin = new List<string>();
             package.sincePlayed = new List<string>();
             package.gameType = new List<string>();
+            package.kdaRatio = new List<string>();
+            package.kda = new KDA();
+            package.kda.kills = new List<int>();
+            package.kda.deaths = new List<int>();
+            package.kda.assists = new List<int>();
+            package.killParticipationPercentage = new List<string>();
+            package.controlWardCount = new List<int?>();
+            package.creepScore = new List<string>();
+
+            int gameIncrementCount = 0;
             foreach (RootGameData rgd in package.matchGameDataList)
             {
                 package.gameLengthSeconds.Add((int)(rgd.info.gameDuration % 60));
                 package.gameLengthMinutes.Add((int)(rgd.info.gameDuration) / 60);
                 package.gameType.Add((rgd.info.gameType == "MATCHED_GAME") ? "Ranked" : "Unranked");
+
 
                 //Days ago
                 DateTime dt = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)
@@ -1070,9 +1091,23 @@ namespace APIProject.Models
                         primaryRuneListID.Add(rgd.info.participants[i].perks.styles[0].selections[0].perk);
                         secondaryRuneListID.Add(rgd.info.participants[i].perks.styles[1].style);
                         package.didWin.Add((bool)(rgd.info.participants[i].win) ? "Victory" : "Defeat");
+                        double kdaToNonNullable = (double)rgd.info.participants[i].challenges.kda;
+                        string toFloatingPoinTwo = kdaToNonNullable.ToString("0.00");
+                        package.kdaRatio.Add($"{toFloatingPoinTwo}:1 KDA");
+                        package.kda.kills.Add((int)rgd.info.participants[i].kills);
+                        package.kda.deaths.Add((int)rgd.info.participants[i].deaths);
+                        package.kda.assists.Add((int)rgd.info.participants[i].assists);
+                        double percentage = (double)rgd.info.participants[i].challenges.killParticipation;
+                        string formattedPercentage = percentage.ToString("0%");
+                        package.killParticipationPercentage.Add(formattedPercentage);
+                        package.controlWardCount.Add(rgd.info.participants[i].challenges.controlWardsPlaced);
+                        float csPerMinute = (float)rgd.info.participants[i].totalMinionsKilled / (float)package.gameLengthMinutes[gameIncrementCount];
+                        package.creepScore.Add($"CS {rgd.info.participants[i].totalMinionsKilled} ({csPerMinute})");
+                        //package.playerRank.Add($"")
                         break;
                     }
                 }
+                gameIncrementCount++;
             }
 
             package.secondaryRunePath = new List<string>();

@@ -11,7 +11,7 @@ namespace APIProject.Services
 
         private HttpClient _httpClient;
 
-        private string riotAPIKey = "RGAPI-1297576f-694a-4996-99c7-db4d8cd7d63a";
+        private string riotAPIKey = "RGAPI-6f1b48e3-dcdb-4cb3-8457-89c0b00725bd";
 
         public RiotAPIService()
         {
@@ -52,7 +52,6 @@ namespace APIProject.Services
                     // Do something with the deserialized object (e.g., bind it to a data source, display it in UI, etc.)
                     return json;
                 }
-                
             }
             catch (Exception ex)
             {
