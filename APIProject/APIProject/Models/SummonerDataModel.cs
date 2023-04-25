@@ -424,6 +424,14 @@ namespace APIProject.Models
         public List<string> primaryRunePath { get; set; }
         public List<string> secondaryRunePath { get; set; }
 
+        public List<int> gameLengthMinutes { get; set; }
+        public List<int> gameLengthSeconds { get; set; }
+
+        public List<string> gameType { get; set; }
+
+        public List<string> sincePlayed {  get; set; }
+        public List<string> didWin { get; set;  }
+
 
     }
 
@@ -1027,8 +1035,33 @@ namespace APIProject.Models
             package.data = summonerData;
             package.profileImgURL = profileImgURL + package.data.profileIconId + ".png";
             package.matchGameDataList = matchGameDataList;
+            package.gameLengthMinutes = new List<int>();
+            package.gameLengthSeconds = new List<int>();
+            package.didWin = new List<string>();
+            package.sincePlayed = new List<string>();
+            package.gameType = new List<string>();
             foreach (RootGameData rgd in package.matchGameDataList)
             {
+                package.gameLengthSeconds.Add((int)(rgd.info.gameDuration % 60));
+                package.gameLengthMinutes.Add((int)(rgd.info.gameDuration) / 60);
+                package.gameType.Add((rgd.info.gameType == "MATCHED_GAME") ? "Ranked" : "Unranked");
+
+                //Days ago
+                DateTime dt = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)
+                .AddMilliseconds((double)rgd.info.gameEndTimestamp);
+
+                // Calculate the time elapsed from the timestamp to now
+                TimeSpan timeElapsed = DateTime.UtcNow - dt;
+
+                // Extract the number of days from the time elapsed
+                int daysAgo = (int)timeElapsed.TotalDays;
+                int hoursAgo = 0;
+                if(timeElapsed.TotalDays < 1)
+                {
+                    hoursAgo = (int)timeElapsed.TotalHours;
+                }
+                package.sincePlayed.Add((daysAgo == 0) ? $"{hoursAgo} hours ago" : $"{daysAgo} days ago");
+                
                 for (int i = 0; i < rgd.info.participants.Count; i++)
                 {
                     if (rgd.info.participants[i].puuid == package.data.puuid)
@@ -1036,6 +1069,7 @@ namespace APIProject.Models
                         thisPlayersMatchData.Add(rgd.info.participants[i]);
                         primaryRuneListID.Add(rgd.info.participants[i].perks.styles[0].selections[0].perk);
                         secondaryRuneListID.Add(rgd.info.participants[i].perks.styles[1].style);
+                        package.didWin.Add((bool)(rgd.info.participants[i].win) ? "Victory" : "Defeat");
                         break;
                     }
                 }
@@ -1063,6 +1097,7 @@ namespace APIProject.Models
                 }
             }
             package.playerMatchDataList = thisPlayersMatchData;
+
             // Return the processed dat   
             return package;
         }
