@@ -7,6 +7,11 @@ using static APIProject.Models.MatchGameData;
 
 namespace APIProject.Models
 {
+    public static class GlobalSummonerData
+    {
+        public static List<RuneData.RuneDataRoot> RuneData { get; set; }
+        public static SummonerSpellData.Root SummonerSpellData { get; set; }
+    }
 
     public class SummonerData
     {
@@ -400,8 +405,30 @@ namespace APIProject.Models
     }
 }
 
+
+    public class SummonerDataAll
+    {
+        public SummonerData data { get; set; }
+        public string profileImgURL { get; set; }
+        public List<RootGameData> matchGameDataList { get; set; }
+
+        public List<Participant> playerMatchDataList { get; set; }
+        public List<string> summonerSpellList = new List<string>(new string[] { "SummonerBarrier", "SummonerBoost", "SummonerTeleport",
+            "SummonerFlash", "SummonerExhaust", "SummonerHaste" ,
+            "SummonerHeal", "SummonerMana", "SummonerPoroRecall",  "SummonerPoroThrow",
+            "SummonerSmite", "SummonerSnowball",  "SummonerSnowURFSnowball_Mark", "SummonerDot",
+        });
+
+        public List<string> primaryRunePath { get; set; }
+        public List<string> secondaryRunePath { get; set; }
+
+
+    }
+
+    //a class to store all rune data from api e.g. domination, electrocute etc and all sub perks.
     public class RuneData
     {
+        //Core Tree
         public class RuneDataRoot
         {
             public int? id { get; set; }
@@ -411,6 +438,7 @@ namespace APIProject.Models
             public List<Slot> slots { get; set; }
         }
 
+        //Keystones
         public class Rune
         {
             public int? id { get; set; }
@@ -427,26 +455,470 @@ namespace APIProject.Models
         }
     }
 
-    public class SummonerDataAll
-    {
-        public SummonerData data { get; set; }
-        public string profileImgURL { get; set; }
-        public List<RootGameData> matchGameDataList { get; set; }
 
-        public List<Participant> playerMatchDataList { get; set; }
-        public List<string> summonerSpellList = new List<string>(new string[] { "SummonerBarrier", "SummonerBoost", "SummonerTeleport",
-            "SummonerFlash", "SummonerExhaust", "SummonerHaste" ,
-            "SummonerHeal", "SummonerMana", "SummonerPoroRecall",  "SummonerPoroThrow",
-            "SummonerSmite", "SummonerSnowball",  "SummonerSnowURFSnowball_Mark", "SummonerDot",
-        });
-        public Dictionary<string, string> keystones = new Dictionary<string, string>
+    //a class for all league spells e.g. flash, ignite
+    public class SummonerSpellData
+    {
+        public class Data
         {
-            {"8112", "Sorcery/ArcaneComet/ArcaneComet" },
-        };
+            public SummonerBarrier SummonerBarrier { get; set; }
+            public SummonerBoost SummonerBoost { get; set; }
+            public SummonerDot SummonerDot { get; set; }
+            public SummonerExhaust SummonerExhaust { get; set; }
+            public SummonerFlash SummonerFlash { get; set; }
+            public SummonerHaste SummonerHaste { get; set; }
+            public SummonerHeal SummonerHeal { get; set; }
+            public SummonerMana SummonerMana { get; set; }
+            public SummonerPoroRecall SummonerPoroRecall { get; set; }
+            public SummonerPoroThrow SummonerPoroThrow { get; set; }
+            public SummonerSmite SummonerSmite { get; set; }
+            public SummonerSnowURFSnowballMark SummonerSnowURFSnowball_Mark { get; set; }
+            public SummonerSnowball SummonerSnowball { get; set; }
+            public SummonerTeleport SummonerTeleport { get; set; }
+            public SummonerUltBookPlaceholder Summoner_UltBookPlaceholder { get; set; }
+            public SummonerUltBookSmitePlaceholder Summoner_UltBookSmitePlaceholder { get; set; }
+        }
+
+        public class Datavalues
+        {
+        }
+
+        public class Image
+        {
+            public string full { get; set; }
+            public string sprite { get; set; }
+            public string group { get; set; }
+            public int? x { get; set; }
+            public int? y { get; set; }
+            public int? w { get; set; }
+            public int? h { get; set; }
+        }
+
+        public class Root
+        {
+            public string type { get; set; }
+            public string version { get; set; }
+            public Data data { get; set; }
+        }
+
+        public class SummonerBarrier
+        {
+            public string id { get; set; }
+            public string name { get; set; }
+            public string description { get; set; }
+            public string tooltip { get; set; }
+            public int? maxrank { get; set; }
+            public List<int?> cooldown { get; set; }
+            public string cooldownBurn { get; set; }
+            public List<int?> cost { get; set; }
+            public string costBurn { get; set; }
+            public Datavalues datavalues { get; set; }
+            public List<List<int?>> effect { get; set; }
+            public List<string> effectBurn { get; set; }
+            public List<object> vars { get; set; }
+            public string key { get; set; }
+            public int? summonerLevel { get; set; }
+            public List<string> modes { get; set; }
+            public string costType { get; set; }
+            public string maxammo { get; set; }
+            public List<int?> range { get; set; }
+            public string rangeBurn { get; set; }
+            public Image image { get; set; }
+            public string resource { get; set; }
+        }
+
+        public class SummonerBoost
+        {
+            public string id { get; set; }
+            public string name { get; set; }
+            public string description { get; set; }
+            public string tooltip { get; set; }
+            public int? maxrank { get; set; }
+            public List<int?> cooldown { get; set; }
+            public string cooldownBurn { get; set; }
+            public List<int?> cost { get; set; }
+            public string costBurn { get; set; }
+            public Datavalues datavalues { get; set; }
+            public List<List<double?>> effect { get; set; }
+            public List<string> effectBurn { get; set; }
+            public List<object> vars { get; set; }
+            public string key { get; set; }
+            public int? summonerLevel { get; set; }
+            public List<string> modes { get; set; }
+            public string costType { get; set; }
+            public string maxammo { get; set; }
+            public List<int?> range { get; set; }
+            public string rangeBurn { get; set; }
+            public Image image { get; set; }
+            public string resource { get; set; }
+        }
+
+        public class SummonerDot
+        {
+            public string id { get; set; }
+            public string name { get; set; }
+            public string description { get; set; }
+            public string tooltip { get; set; }
+            public int? maxrank { get; set; }
+            public List<int?> cooldown { get; set; }
+            public string cooldownBurn { get; set; }
+            public List<int?> cost { get; set; }
+            public string costBurn { get; set; }
+            public Datavalues datavalues { get; set; }
+            public List<List<int?>> effect { get; set; }
+            public List<string> effectBurn { get; set; }
+            public List<object> vars { get; set; }
+            public string key { get; set; }
+            public int? summonerLevel { get; set; }
+            public List<string> modes { get; set; }
+            public string costType { get; set; }
+            public string maxammo { get; set; }
+            public List<int?> range { get; set; }
+            public string rangeBurn { get; set; }
+            public Image image { get; set; }
+            public string resource { get; set; }
+        }
+
+        public class SummonerExhaust
+        {
+            public string id { get; set; }
+            public string name { get; set; }
+            public string description { get; set; }
+            public string tooltip { get; set; }
+            public int? maxrank { get; set; }
+            public List<int?> cooldown { get; set; }
+            public string cooldownBurn { get; set; }
+            public List<int?> cost { get; set; }
+            public string costBurn { get; set; }
+            public Datavalues datavalues { get; set; }
+            public List<List<int?>> effect { get; set; }
+            public List<string> effectBurn { get; set; }
+            public List<object> vars { get; set; }
+            public string key { get; set; }
+            public int? summonerLevel { get; set; }
+            public List<string> modes { get; set; }
+            public string costType { get; set; }
+            public string maxammo { get; set; }
+            public List<int?> range { get; set; }
+            public string rangeBurn { get; set; }
+            public Image image { get; set; }
+            public string resource { get; set; }
+        }
+
+        public class SummonerFlash
+        {
+            public string id { get; set; }
+            public string name { get; set; }
+            public string description { get; set; }
+            public string tooltip { get; set; }
+            public int? maxrank { get; set; }
+            public List<int?> cooldown { get; set; }
+            public string cooldownBurn { get; set; }
+            public List<int?> cost { get; set; }
+            public string costBurn { get; set; }
+            public Datavalues datavalues { get; set; }
+            public List<List<int?>> effect { get; set; }
+            public List<string> effectBurn { get; set; }
+            public List<object> vars { get; set; }
+            public string key { get; set; }
+            public int? summonerLevel { get; set; }
+            public List<string> modes { get; set; }
+            public string costType { get; set; }
+            public string maxammo { get; set; }
+            public List<int?> range { get; set; }
+            public string rangeBurn { get; set; }
+            public Image image { get; set; }
+            public string resource { get; set; }
+        }
+
+        public class SummonerHaste
+        {
+            public string id { get; set; }
+            public string name { get; set; }
+            public string description { get; set; }
+            public string tooltip { get; set; }
+            public int? maxrank { get; set; }
+            public List<int?> cooldown { get; set; }
+            public string cooldownBurn { get; set; }
+            public List<int?> cost { get; set; }
+            public string costBurn { get; set; }
+            public Datavalues datavalues { get; set; }
+            public List<List<int?>> effect { get; set; }
+            public List<string> effectBurn { get; set; }
+            public List<object> vars { get; set; }
+            public string key { get; set; }
+            public int? summonerLevel { get; set; }
+            public List<string> modes { get; set; }
+            public string costType { get; set; }
+            public string maxammo { get; set; }
+            public List<int?> range { get; set; }
+            public string rangeBurn { get; set; }
+            public Image image { get; set; }
+            public string resource { get; set; }
+        }
+
+        public class SummonerHeal
+        {
+            public string id { get; set; }
+            public string name { get; set; }
+            public string description { get; set; }
+            public string tooltip { get; set; }
+            public int? maxrank { get; set; }
+            public List<int?> cooldown { get; set; }
+            public string cooldownBurn { get; set; }
+            public List<int?> cost { get; set; }
+            public string costBurn { get; set; }
+            public Datavalues datavalues { get; set; }
+            public List<List<double?>> effect { get; set; }
+            public List<string> effectBurn { get; set; }
+            public List<object> vars { get; set; }
+            public string key { get; set; }
+            public int? summonerLevel { get; set; }
+            public List<string> modes { get; set; }
+            public string costType { get; set; }
+            public string maxammo { get; set; }
+            public List<int?> range { get; set; }
+            public string rangeBurn { get; set; }
+            public Image image { get; set; }
+            public string resource { get; set; }
+        }
+
+        public class SummonerMana
+        {
+            public string id { get; set; }
+            public string name { get; set; }
+            public string description { get; set; }
+            public string tooltip { get; set; }
+            public int? maxrank { get; set; }
+            public List<int?> cooldown { get; set; }
+            public string cooldownBurn { get; set; }
+            public List<int?> cost { get; set; }
+            public string costBurn { get; set; }
+            public Datavalues datavalues { get; set; }
+            public List<List<int?>> effect { get; set; }
+            public List<string> effectBurn { get; set; }
+            public List<object> vars { get; set; }
+            public string key { get; set; }
+            public int? summonerLevel { get; set; }
+            public List<string> modes { get; set; }
+            public string costType { get; set; }
+            public string maxammo { get; set; }
+            public List<int?> range { get; set; }
+            public string rangeBurn { get; set; }
+            public Image image { get; set; }
+            public string resource { get; set; }
+        }
+
+        public class SummonerPoroRecall
+        {
+            public string id { get; set; }
+            public string name { get; set; }
+            public string description { get; set; }
+            public string tooltip { get; set; }
+            public int? maxrank { get; set; }
+            public List<int?> cooldown { get; set; }
+            public string cooldownBurn { get; set; }
+            public List<int?> cost { get; set; }
+            public string costBurn { get; set; }
+            public Datavalues datavalues { get; set; }
+            public List<List<int?>> effect { get; set; }
+            public List<string> effectBurn { get; set; }
+            public List<object> vars { get; set; }
+            public string key { get; set; }
+            public int? summonerLevel { get; set; }
+            public List<string> modes { get; set; }
+            public string costType { get; set; }
+            public string maxammo { get; set; }
+            public List<int?> range { get; set; }
+            public string rangeBurn { get; set; }
+            public Image image { get; set; }
+            public string resource { get; set; }
+        }
+
+        public class SummonerPoroThrow
+        {
+            public string id { get; set; }
+            public string name { get; set; }
+            public string description { get; set; }
+            public string tooltip { get; set; }
+            public int? maxrank { get; set; }
+            public List<int?> cooldown { get; set; }
+            public string cooldownBurn { get; set; }
+            public List<int?> cost { get; set; }
+            public string costBurn { get; set; }
+            public Datavalues datavalues { get; set; }
+            public List<List<int?>> effect { get; set; }
+            public List<string> effectBurn { get; set; }
+            public List<object> vars { get; set; }
+            public string key { get; set; }
+            public int? summonerLevel { get; set; }
+            public List<string> modes { get; set; }
+            public string costType { get; set; }
+            public string maxammo { get; set; }
+            public List<int?> range { get; set; }
+            public string rangeBurn { get; set; }
+            public Image image { get; set; }
+            public string resource { get; set; }
+        }
+
+        public class SummonerSmite
+        {
+            public string id { get; set; }
+            public string name { get; set; }
+            public string description { get; set; }
+            public string tooltip { get; set; }
+            public int? maxrank { get; set; }
+            public List<int?> cooldown { get; set; }
+            public string cooldownBurn { get; set; }
+            public List<int?> cost { get; set; }
+            public string costBurn { get; set; }
+            public Datavalues datavalues { get; set; }
+            public List<List<int?>> effect { get; set; }
+            public List<string> effectBurn { get; set; }
+            public List<object> vars { get; set; }
+            public string key { get; set; }
+            public int? summonerLevel { get; set; }
+            public List<string> modes { get; set; }
+            public string costType { get; set; }
+            public string maxammo { get; set; }
+            public List<int?> range { get; set; }
+            public string rangeBurn { get; set; }
+            public Image image { get; set; }
+            public string resource { get; set; }
+        }
+
+        public class SummonerSnowball
+        {
+            public string id { get; set; }
+            public string name { get; set; }
+            public string description { get; set; }
+            public string tooltip { get; set; }
+            public int? maxrank { get; set; }
+            public List<int?> cooldown { get; set; }
+            public string cooldownBurn { get; set; }
+            public List<int?> cost { get; set; }
+            public string costBurn { get; set; }
+            public Datavalues datavalues { get; set; }
+            public List<List<int?>> effect { get; set; }
+            public List<string> effectBurn { get; set; }
+            public List<object> vars { get; set; }
+            public string key { get; set; }
+            public int? summonerLevel { get; set; }
+            public List<string> modes { get; set; }
+            public string costType { get; set; }
+            public string maxammo { get; set; }
+            public List<int?> range { get; set; }
+            public string rangeBurn { get; set; }
+            public Image image { get; set; }
+            public string resource { get; set; }
+        }
+
+        public class SummonerSnowURFSnowballMark
+        {
+            public string id { get; set; }
+            public string name { get; set; }
+            public string description { get; set; }
+            public string tooltip { get; set; }
+            public int? maxrank { get; set; }
+            public List<int?> cooldown { get; set; }
+            public string cooldownBurn { get; set; }
+            public List<int?> cost { get; set; }
+            public string costBurn { get; set; }
+            public Datavalues datavalues { get; set; }
+            public List<List<int?>> effect { get; set; }
+            public List<string> effectBurn { get; set; }
+            public List<object> vars { get; set; }
+            public string key { get; set; }
+            public int? summonerLevel { get; set; }
+            public List<string> modes { get; set; }
+            public string costType { get; set; }
+            public string maxammo { get; set; }
+            public List<int?> range { get; set; }
+            public string rangeBurn { get; set; }
+            public Image image { get; set; }
+            public string resource { get; set; }
+        }
+
+        public class SummonerTeleport
+        {
+            public string id { get; set; }
+            public string name { get; set; }
+            public string description { get; set; }
+            public string tooltip { get; set; }
+            public int? maxrank { get; set; }
+            public List<int?> cooldown { get; set; }
+            public string cooldownBurn { get; set; }
+            public List<int?> cost { get; set; }
+            public string costBurn { get; set; }
+            public Datavalues datavalues { get; set; }
+            public List<List<int?>> effect { get; set; }
+            public List<string> effectBurn { get; set; }
+            public List<object> vars { get; set; }
+            public string key { get; set; }
+            public int? summonerLevel { get; set; }
+            public List<string> modes { get; set; }
+            public string costType { get; set; }
+            public string maxammo { get; set; }
+            public List<int?> range { get; set; }
+            public string rangeBurn { get; set; }
+            public Image image { get; set; }
+            public string resource { get; set; }
+        }
+
+        public class SummonerUltBookPlaceholder
+        {
+            public string id { get; set; }
+            public string name { get; set; }
+            public string description { get; set; }
+            public string tooltip { get; set; }
+            public int? maxrank { get; set; }
+            public List<int?> cooldown { get; set; }
+            public string cooldownBurn { get; set; }
+            public List<int?> cost { get; set; }
+            public string costBurn { get; set; }
+            public Datavalues datavalues { get; set; }
+            public List<List<int?>> effect { get; set; }
+            public List<string> effectBurn { get; set; }
+            public List<object> vars { get; set; }
+            public string key { get; set; }
+            public int? summonerLevel { get; set; }
+            public List<string> modes { get; set; }
+            public string costType { get; set; }
+            public string maxammo { get; set; }
+            public List<int?> range { get; set; }
+            public string rangeBurn { get; set; }
+            public Image image { get; set; }
+            public string resource { get; set; }
+        }
+
+        public class SummonerUltBookSmitePlaceholder
+        {
+            public string id { get; set; }
+            public string name { get; set; }
+            public string description { get; set; }
+            public string tooltip { get; set; }
+            public int? maxrank { get; set; }
+            public List<int?> cooldown { get; set; }
+            public string cooldownBurn { get; set; }
+            public List<int?> cost { get; set; }
+            public string costBurn { get; set; }
+            public Datavalues datavalues { get; set; }
+            public List<List<int?>> effect { get; set; }
+            public List<string> effectBurn { get; set; }
+            public List<object> vars { get; set; }
+            public string key { get; set; }
+            public int? summonerLevel { get; set; }
+            public List<string> modes { get; set; }
+            public string costType { get; set; }
+            public string maxammo { get; set; }
+            public List<int?> range { get; set; }
+            public string rangeBurn { get; set; }
+            public Image image { get; set; }
+            public string resource { get; set; }
+        }
+
 
     }
-
-
 
     public class SummonerDataModel
     {
@@ -462,10 +934,47 @@ namespace APIProject.Models
             // Create an instance of the API service
             var riotAPIService = new RiotAPIService();
 
+            //Check if global data is available
+            if(GlobalSummonerData.SummonerSpellData == null || GlobalSummonerData.RuneData == null)
+            {
+                GlobalSummonerData.SummonerSpellData = new SummonerSpellData.Root();
+                GlobalSummonerData.RuneData = new List<RuneData.RuneDataRoot>();
+                #region SummonerSpell
+                //Summoner Data
+                dynamic jsonSummonerSpellData = await riotAPIService.GetSummonerSpellDataASync();
+                try
+                {
+                    // ... process the retrieved data as needed ...
+                    //GlobalSummonerData.SummonerSpellData = JObject.Parse(jsonSummonerSpellData).ToObject<SummonerSpellData.Root>();
+                    GlobalSummonerData.SummonerSpellData = JsonConvert.DeserializeObject<SummonerSpellData.Root>(jsonSummonerSpellData);
+                }
+                catch (Exception ex)
+                {
+                    // Handle any exceptions
+                    Console.WriteLine($"Error: {ex.Message}");
+                    return null;
+                }
+                #endregion
+                #region RuneData
+                //Rune Data
+                dynamic jsonRuneData = await riotAPIService.GetRuneDataASync();
+                try
+                {
+                    // ... process the retrieved data as needed ...
+                    GlobalSummonerData.RuneData = JsonConvert.DeserializeObject<List<RuneData.RuneDataRoot>>(jsonRuneData);
+                }
+                catch (Exception ex)
+                {
+                    // Handle any exceptions
+                    Console.WriteLine($"Error: {ex.Message}");
+                    return null;
+                }
+                #endregion
+            }
+
             // Call the API service method to retrieve data
             dynamic jsonSummonerInfo = await riotAPIService.GetSummonerDataByName(summoner);
             
-
             try
             {
                 // ... process the retrieved data as needed ...
@@ -509,6 +1018,8 @@ namespace APIProject.Models
                     return null;
                 }
             }
+            List<int?> primaryRuneListID = new List<int?>();
+            List<int?> secondaryRuneListID = new List<int?>();
 
             SummonerDataAll package = new SummonerDataAll();
             package.data = summonerData;
@@ -521,14 +1032,73 @@ namespace APIProject.Models
                     if (rgd.info.participants[i].puuid == package.data.puuid)
                     {
                         thisPlayersMatchData.Add(rgd.info.participants[i]);
+                        primaryRuneListID.Add(rgd.info.participants[i].perks.styles[0].style);
+                        secondaryRuneListID.Add(rgd.info.participants[i].perks.styles[1].style);
                         break;
                     }
                 }
             }
+
+            for(int primary = 0; primary < primaryRuneListID.Count; primary++)
+            {
+                if (GlobalSummonerData.RuneData[primary].id == primaryRuneListID[primary])
+                {
+                    package.primaryRunePath.Add(GlobalSummonerData.RuneData[primary].icon);
+                }
+            }
+
             package.playerMatchDataList = thisPlayersMatchData;
 
             // Return the processed data
             return package;
+        }
+
+        [HttpPost]
+        public async Task<dynamic> GetSummonerSpellFromApiAsync()
+        {
+            SummonerSpellData.Data spellData = new SummonerSpellData.Data();
+            // Create an instance of the API service
+            var riotAPIService = new RiotAPIService();
+
+            // Call the API service method to retrieve data
+            dynamic jsonSpellData = await riotAPIService.GetSummonerSpellDataASync();
+
+            try
+            {
+                // ... process the retrieved data as needed ...
+                spellData = JObject.Parse(jsonSpellData).ToObject<SummonerSpellData.Data>();
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions
+                Console.WriteLine($"Error: {ex.Message}");
+                return null;
+            }
+            return spellData;
+        }
+
+        public async Task<dynamic> GetRuneDataFromApiAsync()
+        {
+            RuneData.RuneDataRoot runeData = new RuneData.RuneDataRoot();
+            // Create an instance of the API service
+            var riotAPIService = new RiotAPIService();
+
+            // Call the API service method to retrieve data
+            dynamic jsonSpellData = await riotAPIService.GetRuneDataASync();
+
+
+            try
+            {
+                // ... process the retrieved data as needed ...
+                runeData = JObject.Parse(jsonSpellData).ToObject<RuneData.RuneDataRoot>();
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions
+                Console.WriteLine($"Error: {ex.Message}");
+                return null;
+            }
+            return runeData;
         }
 
         public async Task<dynamic> GetSummonerMatchesFromApiAsync(string summonerPUUID)

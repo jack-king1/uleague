@@ -16,6 +16,8 @@ namespace APIProject.Services
         public RiotAPIService()
         {
             _httpClient = new HttpClient();
+            //Get global data for riot api such as summoner spells and rune data
+
         }
 
         //Get all league champion data.
@@ -151,6 +153,51 @@ namespace APIProject.Services
                 return null;
             }
         }
+
+        public async Task<dynamic> GetSummonerSpellDataASync(string region = "en_GB")
+        {
+            string apiUrl = $"http://ddragon.leagueoflegends.com/cdn/13.8.1/data/{region}/summoner.json";
+
+            try
+            {
+                // Fetch JSON data from URL
+                HttpResponseMessage response = await _httpClient.GetAsync(apiUrl);
+                response.EnsureSuccessStatusCode(); // Throw an exception if response is not successful
+
+                //json string which can be converted into c# object using deserialization.
+                string json = await response.Content.ReadAsStringAsync();
+                return json;
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions
+                Console.WriteLine($"Error: {ex.Message}");
+                return null;
+            }
+        }
+
+        public async Task<dynamic> GetRuneDataASync(string region = "en_GB")
+        {
+            string apiUrl = $"http://ddragon.leagueoflegends.com/cdn/13.8.1/data/{region}/runesReforged.json";
+
+            try
+            {
+                // Fetch JSON data from URL
+                HttpResponseMessage response = await _httpClient.GetAsync(apiUrl);
+                response.EnsureSuccessStatusCode(); // Throw an exception if response is not successful
+
+                //json string which can be converted into c# object using deserialization.
+                string json = await response.Content.ReadAsStringAsync();
+                return json;
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions
+                Console.WriteLine($"Error: {ex.Message}");
+                return null;
+            }
+        }
+
 
     }
 }
