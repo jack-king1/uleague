@@ -1058,7 +1058,7 @@ namespace APIProject.Models
 
                     if (rd.id == secondaryRuneListID[primary])
                     {
-                        package.secondaryRunePath.Add(GlobalSummonerData.RuneData[primary].icon);
+                        package.secondaryRunePath.Add(rd.icon);
                     }
                 }
             }
