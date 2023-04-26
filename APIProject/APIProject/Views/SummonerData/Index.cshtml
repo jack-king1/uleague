@@ -58,7 +58,7 @@
                             </div>
                             </div>
                         <div class="mx-4">
-                            <div>@Model.kda.kills[i] / @Model.kda.deaths[i] / @Model.kda.assists[i]</div>
+                                <div>@Model.kda.kills[i] / <span class="text-danger fw-bold">@Model.kda.deaths[i]</span> / @Model.kda.assists[i]</div>
                             <div>@Model.kdaRatio[i]</div>
                         </div>
                             <div class="d-flex flex-column summonerListFontSize">
@@ -69,10 +69,10 @@
 
                     </div>
                     <div class="d-flex">
-                        <div class="items d-flex flex-row">
+                        <div class="items d-flex flex-row mt-1">
                             @foreach(int itemList in Model.itemIDList[i])
                             {
-                                <div class="summonerPerksContainer"><img class="rounded w-100 h-100 img-fluid" src="https://ddragon.leagueoflegends.com/cdn/13.8.1/img/item/@(itemList).png" /></div>
+                                <div class="summonerPerksContainer"><img class="w-100 h-100 img-fluid" src="https://ddragon.leagueoflegends.com/cdn/13.8.1/img/item/@(itemList).png" /></div>
                             } 
                         </div>
                     </div>
