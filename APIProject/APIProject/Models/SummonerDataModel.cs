@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.TagHelpers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Globalization;
+using System.Security.Cryptography.X509Certificates;
 using static APIProject.Models.MatchGameData;
 
 namespace APIProject.Models
@@ -442,6 +443,8 @@ namespace APIProject.Models
         public List<int?> controlWardCount { get; set; }
         public List<string> creepScore { get; set; }
         public List<string> playerRank { get; set; }
+
+        public List<List<int>> itemIDList { get; set; }
 
     }
 
@@ -1058,7 +1061,7 @@ namespace APIProject.Models
             package.killParticipationPercentage = new List<string>();
             package.controlWardCount = new List<int?>();
             package.creepScore = new List<string>();
-
+            package.itemIDList = new List<List<int>>();
             int gameIncrementCount = 0;
             foreach (RootGameData rgd in package.matchGameDataList)
             {
@@ -1102,8 +1105,69 @@ namespace APIProject.Models
                         package.killParticipationPercentage.Add(formattedPercentage);
                         package.controlWardCount.Add(rgd.info.participants[i].challenges.controlWardsPlaced);
                         float csPerMinute = (float)rgd.info.participants[i].totalMinionsKilled / (float)package.gameLengthMinutes[gameIncrementCount];
-                        package.creepScore.Add($"CS {rgd.info.participants[i].totalMinionsKilled} ({csPerMinute})");
+                        package.creepScore.Add($"CS {rgd.info.participants[i].totalMinionsKilled} ({csPerMinute.ToString("0.00")})");
                         //package.playerRank.Add($"")
+                        //items
+                        List<int> itemsToAdd = new List<int>();
+                        #region riotapididntmakeitalist
+                        if((int)rgd.info.participants[i].item0 != 0)
+                        {
+                            itemsToAdd.Add((int)rgd.info.participants[i].item0);
+                        }
+                        else
+                        {
+                            itemsToAdd.Add(7050);
+                        }
+                        if ((int)rgd.info.participants[i].item1 != 0)
+                        {
+                            itemsToAdd.Add((int)rgd.info.participants[i].item1);
+                        }
+                        else
+                        {
+                            itemsToAdd.Add(7050);
+                        }
+                        if ((int)rgd.info.participants[i].item2 != 0)
+                        {
+                            itemsToAdd.Add((int)rgd.info.participants[i].item2);
+                        }
+                        else
+                        {
+                            itemsToAdd.Add(7050);
+                        }
+                        if ((int)rgd.info.participants[i].item3 != 0)
+                        {
+                            itemsToAdd.Add((int)rgd.info.participants[i].item3);
+                        }
+                        else
+                        {
+                            itemsToAdd.Add(7050);
+                        }
+                        if ((int)rgd.info.participants[i].item4 != 0)
+                        {
+                            itemsToAdd.Add((int)rgd.info.participants[i].item4);
+                        }
+                        else
+                        {
+                            itemsToAdd.Add(7050);
+                        }
+                        if ((int)rgd.info.participants[i].item5 != 0)
+                        {
+                            itemsToAdd.Add((int)rgd.info.participants[i].item5);
+                        }
+                        else
+                        {
+                            itemsToAdd.Add(7050);
+                        }
+                        if ((int)rgd.info.participants[i].item6 != 0)
+                        {
+                            itemsToAdd.Add((int)rgd.info.participants[i].item6);
+                        }
+                        else
+                        {
+                            itemsToAdd.Add(7050);
+                        }
+                        #endregion
+                        package.itemIDList.Add(itemsToAdd);
                         break;
                     }
                 }

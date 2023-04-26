@@ -107,7 +107,7 @@ namespace APIProject.Services
             }
         }
 
-        public async Task<dynamic> GetSummonerMatchHistoryListByPuuid(string puuid, int count = 2, string region = "europe")
+        public async Task<dynamic> GetSummonerMatchHistoryListByPuuid(string puuid, int count = 10, string region = "europe")
         {
 
             string apiUrl = $"https://{region}.api.riotgames.com/lol/match/v5/matches/by-puuid/{puuid}/ids?start=0&count={count}&api_key={riotAPIKey}"; // Replace with your API URL
