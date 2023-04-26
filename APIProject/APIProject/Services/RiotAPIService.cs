@@ -11,7 +11,7 @@ namespace APIProject.Services
 
         private HttpClient _httpClient;
 
-        private string riotAPIKey = "RGAPI-6f1b48e3-dcdb-4cb3-8457-89c0b00725bd";
+        private string riotAPIKey = "RGAPI-019648dc-89a6-4eb6-8b00-683288956d8b";
 
         public RiotAPIService()
         {

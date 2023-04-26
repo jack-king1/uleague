@@ -35,19 +35,24 @@
     <section>
         <h2>Match History</h2>
         <div class="d-flex flex-column">
+
             @for(int i = 0; i < Model.matchGameDataList.Count; i++)
             {
-                <div class="d-flex flex-row justify-content-between mb-2 p-3 rounded @(Model.didWin[i] == "Victory" ? "bg-victory" : "bg-defeat")">
-                <div class="game">
+                <div class="d-flex flex-row mb-2 w-100">
+                    <div class=" rounded-start @(Model.didWin[i] == "Victory" ? "containerTabStartWin" : "containerTabStartLose")">
+                        
+                    </div>
+                <div class="d-flex flex-row justify-content-between p-3 rounded-end w-100 @(Model.didWin[i] == "Victory" ? "bg-victory" : "bg-defeat")">
+                <div class="game me-3">
                     <div class="fw-bold">@Model.gameType[i]</div>
                     <div class="">@Model.sincePlayed[i]</div>
                     <div class="">@Model.didWin[i]</div>
                     <div class="">@Model.gameLengthMinutes[i]m @Model.gameLengthSeconds[i]s</div>
                 </div>
-                <div class="info">
+                <div class="info me-3">
                     <div class="details d-flex">
                         <div class="d-flex">
-                                <div class="champIconContainer"><img class="rounded-circle w-100 h-100 img-fluid" src="http://ddragon.leagueoflegends.com/cdn/img/champion/tiles/@(Model.playerMatchDataList[i].championName)_0.jpg" /></div>
+                                    <div class="champIconContainer"><img class="rounded-circle w-100 h-100 img-fluid" src="http://ddragon.leagueoflegends.com/cdn/13.8.1/img/champion/@(Model.playerMatchDataList[i].championName).png" /></div>
                             <div class="ms-4">
                                 <div class="summonerPerksContainer"><img class="rounded w-100 h-100 img-fluid" src="http://ddragon.leagueoflegends.com/cdn/13.8.1/img/spell/@(Model.summonerSpellList[(int)Model.playerMatchDataList[i].summoner1Id - 1]).png" /></div>
                                 <div class="summonerPerksContainer"><img class="rounded w-100 h-100 img-fluid" src="http://ddragon.leagueoflegends.com/cdn/13.8.1/img/spell/@(Model.summonerSpellList[(int)Model.playerMatchDataList[i].summoner2Id - 1]).png" /></div>
@@ -83,7 +88,7 @@
                             {
                                 <div class="d-flex flex-row justify-content-start w-100 ">
                                     <div class="summonerDetailsContainer ">
-                                        <img class="rounded w-100 h-100 " src="http://ddragon.leagueoflegends.com/cdn/img/champion/tiles/@(@Model.matchGameDataList[i].info.participants[j].championName)_0.jpg" />
+                                            <img class="rounded w-100 h-100 " src="http://ddragon.leagueoflegends.com/cdn/13.8.1/img/champion/@(@Model.matchGameDataList[i].info.participants[j].championName).png" />
                                     </div>
                                     <div class="w-100 summonerListFontSize">@Model.matchGameDataList[i].info.participants[j].summonerName</div>
                                 </div>
@@ -102,6 +107,7 @@
                     </div>
                 </section>
             </div>
+            </div>
             }
         </div>
 
@@ -116,14 +122,28 @@
 <style>
 
 .bg-victory{
-        background-color: #59343B;
+        background-color: #28344E;
+       
 }
 
 .bg-defeat{
-        background-color: #28344E;
+        background-color: #59343B;
 }
 .teamsBox {
         min-width: 200px; /* Set minimum width to 200px */
+    }
+
+    .containerTabStartWin{
+        background-color: #5383E8;
+        min-height: 100%;
+        min-width: 8px;
+    }
+
+    .containerTabStartLose {
+        background-color: #E84057;
+        min-height: 100%;
+        min-width: 8px;
+        width:8px;
     }
 .container {
   margin-top: 20px;
