@@ -13,6 +13,10 @@
       "PackagePath": "staticwebassets\\data\\.gitignore"
     },
     {
+      "Id": "E:\\Github\\AspNetApi\\APIProject\\APIProject\\wwwroot\\data\\images\\logo.png",
+      "PackagePath": "staticwebassets\\data\\images\\logo.png"
+    },
+    {
       "Id": "E:\\Github\\AspNetApi\\APIProject\\APIProject\\wwwroot\\data\\riot\\.gitkeep",
       "PackagePath": "staticwebassets\\data\\riot\\.gitkeep"
     },

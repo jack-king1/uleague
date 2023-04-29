@@ -15,6 +15,7 @@ namespace APIProject.Controllers
 
         public IActionResult Index()
         {
+
             return View();
         }
 

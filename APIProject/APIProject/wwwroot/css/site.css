@@ -17,3 +17,26 @@ body {
   margin-bottom: 60px;
 
 }
+
+.logo{
+    max-height: 4rem;
+}
+
+.navbarGap {
+    margin-top: 5rem;
+}
+
+.custom-btn-primary {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.custom-btn-primary:hover {
+    background-color: rgb(26, 189, 211) !important;
+    border-color: rgb(26, 189, 211) !important;
+}
+
+.custom-btn-outline-primary {
+    border-color: rgb(21, 170, 191) !important;
+    color: rgb(21, 170, 191) !important;
+}

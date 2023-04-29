@@ -6,12 +6,12 @@
 }
 
 <!-- HTML Code -->
-<div class="d-flex justify-content-center align-items-center">
-    <form class="form-inline" method="post" action="/SummonerData/Summoner" id="searchForm">
+<div class="d-flex justify-content-center align-items-center navbarGap">
+    <form class="form-inline mt-4" method="post" action="/SummonerData/Summoner" id="searchForm">
         <div class="input-group">
             <input class="form-control form-control-lg py-3" type="search" placeholder="Search" aria-label="Search" name="searchQuery">
             <div class="input-group-append">
-                <button class="btn btn-primary btn-lg py-3 px-4" type="submit">Search</button>
+                <button class="btn btn-primary custom btn-lg py-3 px-4" type="submit">Search</button>
             </div>
         </div>
     </form>
@@ -99,7 +99,7 @@
                             {
                                 <div class="d-flex flex-row">
                                     <div class="summonerDetailsContainer me-1">
-                                        <img class="rounded w-100 h-100" src="http://ddragon.leagueoflegends.com/cdn/img/champion/tiles/@(@Model.matchGameDataList[i].info.participants[5+k].championName)_0.jpg" />
+                                            <img class="rounded w-100 h-100" src="http://ddragon.leagueoflegends.com/cdn/13.8.1/img/champion/@(@Model.matchGameDataList[i].info.participants[5+k].championName).png" />
                                     </div>
                                     <div class="w-100 summonerListFontSize">@Model.matchGameDataList[i].info.participants[5+k].summonerName</div>
                                 </div>

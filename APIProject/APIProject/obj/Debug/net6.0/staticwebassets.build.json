@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "UiMO0sARjDSn8m18VYp689XuezpL1qu0NMAFDQsjrfU=",
+  "Hash": "tU1chD/fzqRFSv8UcAG+drLuKHzMAtXeaZ7mj0FlRJg=",
   "Source": "APIProject",
   "BasePath": "_content/APIProject",
   "Mode": "Default",
@@ -83,6 +83,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\data\\.gitignore"
+    },
+    {
+      "Identity": "E:\\Github\\AspNetApi\\APIProject\\APIProject\\wwwroot\\data\\images\\logo.png",
+      "SourceId": "APIProject",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\Github\\AspNetApi\\APIProject\\APIProject\\wwwroot\\",
+      "BasePath": "_content/APIProject",
+      "RelativePath": "data/images/logo.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\data\\images\\logo.png"
     },
     {
       "Identity": "E:\\Github\\AspNetApi\\APIProject\\APIProject\\wwwroot\\data\\riot\\.gitkeep",
