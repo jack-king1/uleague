@@ -11,7 +11,7 @@
         <div class="input-group">
             <input class="form-control form-control-lg py-3" type="search" placeholder="Search" aria-label="Search" name="searchQuery">
             <div class="input-group-append">
-                <button class="btn btn-primary custom btn-lg py-3 px-4" type="submit">Search</button>
+                <button class="btn btn-primary custom-primary btn-lg py-3 px-4" type="submit">Search</button>
             </div>
         </div>
     </form>
@@ -54,8 +54,8 @@
                         <div class="d-flex">
                                     <div class="champIconContainer"><img class="rounded-circle w-100 h-100 img-fluid" src="http://ddragon.leagueoflegends.com/cdn/13.8.1/img/champion/@(Model.playerMatchDataList[i].championName).png" /></div>
                             <div class="ms-4">
-                                <div class="summonerPerksContainer"><img class="rounded w-100 h-100 img-fluid" src="http://ddragon.leagueoflegends.com/cdn/13.8.1/img/spell/@(Model.summonerSpellList[(int)Model.playerMatchDataList[i].summoner1Id - 1]).png" /></div>
-                                <div class="summonerPerksContainer"><img class="rounded w-100 h-100 img-fluid" src="http://ddragon.leagueoflegends.com/cdn/13.8.1/img/spell/@(Model.summonerSpellList[(int)Model.playerMatchDataList[i].summoner2Id - 1]).png" /></div>
+                                <div class="summonerPerksContainer"><img class="rounded w-100 h-100 img-fluid" src="http://ddragon.leagueoflegends.com/cdn/13.8.1/img/spell/@(Model.summonerSpell1ImgPath[i])" /></div>
+                                <div class="summonerPerksContainer"><img class="rounded w-100 h-100 img-fluid" src="http://ddragon.leagueoflegends.com/cdn/13.8.1/img/spell/@(Model.summonerSpell2ImgPath[i])" /></div>
                             </div>
                             <div class="">
                                 <div class="summonerPerksContainer"><img class="rounded w-100 h-100 img-fluid" src="http://ddragon.leagueoflegends.com/cdn/img/@(Model.primaryRunePath[i])" /></div>

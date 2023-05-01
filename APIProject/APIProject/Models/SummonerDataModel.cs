@@ -14,6 +14,15 @@ namespace APIProject.Models
     {
         public static List<RuneData.RuneDataRoot> RuneData { get; set; }
         public static SummonerSpellData.Root SummonerSpellData { get; set; }
+        public static List<MatchQueueType> matchQueueTypes { get; set; }
+    }
+
+    public class MatchQueueType
+    {
+        public int? queueId { get; set; }
+        public string map { get; set; }
+        public string description { get; set; }
+        public string notes { get; set; }
     }
 
     public class SummonerData
@@ -421,14 +430,11 @@ namespace APIProject.Models
         public List<RootGameData> matchGameDataList { get; set; }
 
         public List<Participant> playerMatchDataList { get; set; }
-        public List<string> summonerSpellList = new List<string>(new string[] { "SummonerBarrier", "SummonerBoost", "SummonerTeleport",
-            "SummonerFlash", "SummonerExhaust", "SummonerHaste" ,
-            "SummonerHeal", "SummonerMana", "SummonerPoroRecall",  "SummonerPoroThrow",
-            "SummonerSmite", "SummonerSnowball",  "SummonerSnowURFSnowball_Mark", "SummonerDot",
-        });
 
         public List<string> primaryRunePath { get; set; }
         public List<string> secondaryRunePath { get; set; }
+        public List<string> summonerSpell1ImgPath { get; set; }
+        public List<string> summonerSpell2ImgPath { get; set; }
 
         public List<int> gameLengthMinutes { get; set; }
         public List<int> gameLengthSeconds { get; set; }
@@ -443,7 +449,6 @@ namespace APIProject.Models
         public List<int?> controlWardCount { get; set; }
         public List<string> creepScore { get; set; }
         public List<string> playerRank { get; set; }
-
         public List<List<int>> itemIDList { get; set; }
 
     }
@@ -958,10 +963,11 @@ namespace APIProject.Models
             var riotAPIService = new RiotAPIService();
 
             //Check if global data is available
-            if (GlobalSummonerData.SummonerSpellData == null || GlobalSummonerData.RuneData == null)
+            if (GlobalSummonerData.SummonerSpellData == null || GlobalSummonerData.RuneData == null || GlobalSummonerData.matchQueueTypes == null)
             {
                 GlobalSummonerData.SummonerSpellData = new SummonerSpellData.Root();
                 GlobalSummonerData.RuneData = new List<RuneData.RuneDataRoot>();
+                GlobalSummonerData.matchQueueTypes = new List<MatchQueueType>();
                 #region SummonerSpell
                 //Summoner Data
                 dynamic jsonSummonerSpellData = await riotAPIService.GetSummonerSpellDataASync();
@@ -985,6 +991,22 @@ namespace APIProject.Models
                 {
                     // ... process the retrieved data as needed ...
                     GlobalSummonerData.RuneData = JsonConvert.DeserializeObject<List<RuneData.RuneDataRoot>>(jsonRuneData);
+                }
+                catch (Exception ex)
+                {
+                    // Handle any exceptions
+                    Console.WriteLine($"Error: {ex.Message}");
+                    return null;
+                }
+                #endregion
+
+                #region MatchTypes
+                //Rune Data
+                dynamic jsonMatchTypeData = await riotAPIService.GetMatchTypeDataASync();
+                try
+                {
+                    // ... process the retrieved data as needed ...
+                    GlobalSummonerData.matchQueueTypes = JsonConvert.DeserializeObject<List<MatchQueueType>>(jsonMatchTypeData);
                 }
                 catch (Exception ex)
                 {
@@ -1041,8 +1063,12 @@ namespace APIProject.Models
                     return null;
                 }
             }
+            //The active rune ids for searched player for each match.
             List<int?> primaryRuneListID = new List<int?>();
             List<int?> secondaryRuneListID = new List<int?>();
+            //The active summoner spell ids for searched player for each match.
+            List<int?> summonerSpell0List = new List<int?>();
+            List<int?> summonerSpell1List = new List<int?>();
 
             SummonerDataAll package = new SummonerDataAll();
             package.data = summonerData;
@@ -1067,7 +1093,21 @@ namespace APIProject.Models
             {
                 package.gameLengthSeconds.Add((int)(rgd.info.gameDuration % 60));
                 package.gameLengthMinutes.Add((int)(rgd.info.gameDuration) / 60);
-                package.gameType.Add((rgd.info.gameType == "MATCHED_GAME") ? "Ranked" : "Unranked");
+                string gameModeName = "Normal";
+                //Game Type
+                if(rgd.info.queueId == 420)
+                {
+                    gameModeName = "Ranked Solo";
+                }
+                else if(rgd.info.queueId == 440)
+                {
+                    gameModeName = "Ranked Flex";
+                }
+                else if (rgd.info.queueId == 450)
+                {
+                    gameModeName = "ARAM";
+                }
+                package.gameType.Add(gameModeName);
 
 
                 //Days ago
@@ -1093,6 +1133,8 @@ namespace APIProject.Models
                         thisPlayersMatchData.Add(rgd.info.participants[i]);
                         primaryRuneListID.Add(rgd.info.participants[i].perks.styles[0].selections[0].perk);
                         secondaryRuneListID.Add(rgd.info.participants[i].perks.styles[1].style);
+                        summonerSpell0List.Add(rgd.info.participants[i].summoner1Id);
+                        summonerSpell1List.Add(rgd.info.participants[i].summoner2Id);
                         package.didWin.Add((bool)(rgd.info.participants[i].win) ? "Victory" : "Defeat");
                         double kdaToNonNullable = (double)rgd.info.participants[i].challenges.kda;
                         string toFloatingPoinTwo = kdaToNonNullable.ToString("0.00");
@@ -1100,9 +1142,19 @@ namespace APIProject.Models
                         package.kda.kills.Add((int)rgd.info.participants[i].kills);
                         package.kda.deaths.Add((int)rgd.info.participants[i].deaths);
                         package.kda.assists.Add((int)rgd.info.participants[i].assists);
-                        double percentage = (double)rgd.info.participants[i].challenges.killParticipation;
-                        string formattedPercentage = percentage.ToString("0%");
-                        package.killParticipationPercentage.Add(formattedPercentage);
+                        if(rgd.info.participants[i].challenges.killParticipation != null)
+                        {
+                            double percentage = (double)rgd.info.participants[i].challenges.killParticipation;
+                            string formattedPercentage = percentage.ToString("0%");
+                            package.killParticipationPercentage.Add(formattedPercentage);
+                        }
+                        else
+                        {
+                            string formattedPercentage = "0%";
+                            package.killParticipationPercentage.Add(formattedPercentage);
+                        }
+                        
+
                         package.controlWardCount.Add(rgd.info.participants[i].challenges.controlWardsPlaced);
                         float csPerMinute = (float)rgd.info.participants[i].totalMinionsKilled / (float)package.gameLengthMinutes[gameIncrementCount];
                         package.creepScore.Add($"CS {rgd.info.participants[i].totalMinionsKilled} ({csPerMinute.ToString("0.00")})");
@@ -1176,7 +1228,6 @@ namespace APIProject.Models
 
             package.secondaryRunePath = new List<string>();
             package.primaryRunePath = new List<string>();
-
             for (int primary = 0; primary < primaryRuneListID.Count; primary++)
             {
                 foreach (RuneData.RuneDataRoot rd in GlobalSummonerData.RuneData)
@@ -1195,6 +1246,58 @@ namespace APIProject.Models
                     }
                 }
             }
+
+            package.summonerSpell1ImgPath = new List<string>();
+            package.summonerSpell2ImgPath = new List<string>();
+            SummonerSpellData.Data data = GlobalSummonerData.SummonerSpellData.data;
+            for (int summonerSpellCount = 0; summonerSpellCount < summonerSpell0List.Count; summonerSpellCount++)
+            {
+                foreach (var component in new object[] { data.SummonerFlash, data.SummonerBarrier, data.SummonerBoost, data.SummonerDot, data.SummonerExhaust,
+                data.SummonerMana, data.SummonerSmite, data.SummonerSnowball, data.SummonerHaste, data.SummonerHeal, data.Summoner_UltBookSmitePlaceholder,
+                    data.Summoner_UltBookPlaceholder, data.SummonerPoroRecall, data.SummonerPoroThrow, data.SummonerTeleport, data.SummonerSnowURFSnowball_Mark,
+                    data.SummonerHaste})
+                {
+                    bool matchingSpellID1 = false;
+                    bool matchingSpellID2 = false;
+
+                    foreach (var property in component.GetType().GetProperties())
+                    {
+                        if (property.Name == "key")
+                        {
+                            
+                            int summonerID = int.Parse((string)property.GetValue(component));
+                            if(summonerID == summonerSpell0List[summonerSpellCount])
+                            {
+                                matchingSpellID1 = true;
+                            }
+                            else if(summonerID == summonerSpell1List[summonerSpellCount])
+                            {
+                                matchingSpellID2 = true;
+                            }
+                        }
+                        
+                        if(!matchingSpellID1 && !matchingSpellID2)
+                        {
+                            continue;
+                        }
+                        
+                        if(property.Name == "image")
+                        {
+                            SummonerSpellData.Image summonerSpellImage = (SummonerSpellData.Image)property.GetValue(component);
+                            if(matchingSpellID1)
+                            {
+                                package.summonerSpell1ImgPath.Add(summonerSpellImage.full);
+                            }
+                            else
+                            {
+                                package.summonerSpell2ImgPath.Add(summonerSpellImage.full);
+                            }
+                        }
+                    }
+                }
+            }
+
+
             package.playerMatchDataList = thisPlayersMatchData;
 
             // Return the processed dat   

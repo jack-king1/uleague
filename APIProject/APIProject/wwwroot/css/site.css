@@ -26,17 +26,23 @@ body {
     margin-top: 5rem;
 }
 
-.custom-btn-primary {
-    background-color: #007bff;
-    color: #fff;
+.custom-primary {
+    background-color: #FF5722;
+    border-color: #FF5722;
 }
 
-.custom-btn-primary:hover {
-    background-color: rgb(26, 189, 211) !important;
-    border-color: rgb(26, 189, 211) !important;
-}
+    .custom-primary:hover,
+    .custom-primary:focus {
+        background-color: #ff6e40;
+        border-color: #ff6e40;
+        outline: none;
+    }
 
-.custom-btn-outline-primary {
-    border-color: rgb(21, 170, 191) !important;
-    color: rgb(21, 170, 191) !important;
-}
+    .custom-primary:active {
+        background-color: #e64a19;
+        border-color: #e64a19;
+    }
+
+    .custom-primary:focus {
+        outline: none;
+    }

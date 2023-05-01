@@ -11,7 +11,7 @@ namespace APIProject.Services
 
         private HttpClient _httpClient;
 
-        private string riotAPIKey = "RGAPI-d6a3d73f-13ac-4a31-a103-11892b4616ac";
+        private string riotAPIKey = "RGAPI-b9808a70-3b52-4308-ad20-bb694e134f4b";
 
         public RiotAPIService()
         {
@@ -178,6 +178,28 @@ namespace APIProject.Services
         public async Task<dynamic> GetRuneDataASync(string region = "en_GB")
         {
             string apiUrl = $"http://ddragon.leagueoflegends.com/cdn/13.8.1/data/{region}/runesReforged.json";
+
+            try
+            {
+                // Fetch JSON data from URL
+                HttpResponseMessage response = await _httpClient.GetAsync(apiUrl);
+                response.EnsureSuccessStatusCode(); // Throw an exception if response is not successful
+
+                //json string which can be converted into c# object using deserialization.
+                string json = await response.Content.ReadAsStringAsync();
+                return json;
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions
+                Console.WriteLine($"Error: {ex.Message}");
+                return null;
+            }
+        }
+
+        public async Task<dynamic> GetMatchTypeDataASync()
+        {
+            string apiUrl = $"https://static.developer.riotgames.com/docs/lol/queues.json";
 
             try
             {
