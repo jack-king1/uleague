@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "tU1chD/fzqRFSv8UcAG+drLuKHzMAtXeaZ7mj0FlRJg=",
+  "Hash": "bD6gwt21N+t0iQZ1lM8WGIjO2ZYh/6psl2dV3m2OQew=",
   "Source": "APIProject",
   "BasePath": "_content/APIProject",
   "Mode": "Default",
@@ -117,23 +117,6 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\data\\riot\\.gitkeep"
-    },
-    {
-      "Identity": "E:\\Github\\AspNetApi\\APIProject\\APIProject\\wwwroot\\favicon.ico",
-      "SourceId": "APIProject",
-      "SourceType": "Discovered",
-      "ContentRoot": "E:\\Github\\AspNetApi\\APIProject\\APIProject\\wwwroot\\",
-      "BasePath": "_content/APIProject",
-      "RelativePath": "favicon.ico",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\favicon.ico"
     },
     {
       "Identity": "E:\\Github\\AspNetApi\\APIProject\\APIProject\\wwwroot\\js\\site.js",
@@ -1120,6 +1103,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\lib\\jquery-validation-unobtrusive\\LICENSE.txt"
+    },
+    {
+      "Identity": "E:\\Github\\AspNetApi\\APIProject\\APIProject\\wwwroot\\logofav.ico",
+      "SourceId": "APIProject",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\Github\\AspNetApi\\APIProject\\APIProject\\wwwroot\\",
+      "BasePath": "_content/APIProject",
+      "RelativePath": "logofav.ico",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\logofav.ico"
     }
   ]
 }

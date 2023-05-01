@@ -21,10 +21,6 @@
       "PackagePath": "staticwebassets\\data\\riot\\.gitkeep"
     },
     {
-      "Id": "E:\\Github\\AspNetApi\\APIProject\\APIProject\\wwwroot\\favicon.ico",
-      "PackagePath": "staticwebassets\\favicon.ico"
-    },
-    {
       "Id": "E:\\Github\\AspNetApi\\APIProject\\APIProject\\wwwroot\\js\\site.js",
       "PackagePath": "staticwebassets\\js\\site.js"
     },
@@ -255,6 +251,10 @@
     {
       "Id": "E:\\Github\\AspNetApi\\APIProject\\APIProject\\wwwroot\\lib\\jquery\\dist\\jquery.min.map",
       "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.map"
+    },
+    {
+      "Id": "E:\\Github\\AspNetApi\\APIProject\\APIProject\\wwwroot\\logofav.ico",
+      "PackagePath": "staticwebassets\\logofav.ico"
     },
     {
       "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.APIProject.Microsoft.AspNetCore.StaticWebAssets.props",
