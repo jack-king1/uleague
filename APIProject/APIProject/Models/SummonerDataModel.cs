@@ -423,6 +423,7 @@ namespace APIProject.Models
         public List<int> assists { get; set; }
     }
 
+    //store the information of a single match within a given players match history
     public class SummonerDataAll
     {
         public SummonerData data { get; set; }
@@ -450,6 +451,8 @@ namespace APIProject.Models
         public List<string> creepScore { get; set; }
         public List<string> playerRank { get; set; }
         public List<List<int>> itemIDList { get; set; }
+
+        public List<List<string>> summonerChampionImgPath { get; set; }
 
     }
 
@@ -952,6 +955,21 @@ namespace APIProject.Models
     {
         private string profileImgURL = "http://ddragon.leagueoflegends.com/cdn/13.8.1/img/profileicon/";
 
+        string CreateSummonerIconURLPath(string championName)
+        {
+            if(championName != "JarvanIV" && championName != "MasterYi" && championName != "MissFortune" && championName != "Lee Sin" 
+                && championName != "AurelionSol" && championName != "DrMundo")
+            {
+                string tempName = championName.Substring(0, 1).ToUpper() + championName.Substring(1).ToLower();
+                return tempName;
+            }
+            else
+            {
+                return championName;
+            }
+
+        }
+
         [HttpPost]
         public async Task<dynamic> GetSummonrDataFromApiAsync(string summoner)
         {
@@ -1069,6 +1087,7 @@ namespace APIProject.Models
             //The active summoner spell ids for searched player for each match.
             List<int?> summonerSpell0List = new List<int?>();
             List<int?> summonerSpell1List = new List<int?>();
+            List<List<string>> summonerChampionImgPathTemp = new List<List<string>>();
 
             SummonerDataAll package = new SummonerDataAll();
             package.data = summonerData;
@@ -1125,7 +1144,7 @@ namespace APIProject.Models
                     hoursAgo = (int)timeElapsed.TotalHours;
                 }
                 package.sincePlayed.Add((daysAgo == 0) ? $"{hoursAgo} hours ago" : $"{daysAgo} days ago");
-                
+                List<string> correctedChampNames = new List<string>();
                 for (int i = 0; i < rgd.info.participants.Count; i++)
                 {
                     if (rgd.info.participants[i].puuid == package.data.puuid)
@@ -1154,7 +1173,6 @@ namespace APIProject.Models
                             package.killParticipationPercentage.Add(formattedPercentage);
                         }
                         
-
                         package.controlWardCount.Add(rgd.info.participants[i].challenges.controlWardsPlaced);
                         float csPerMinute = (float)rgd.info.participants[i].totalMinionsKilled / (float)package.gameLengthMinutes[gameIncrementCount];
                         package.creepScore.Add($"CS {rgd.info.participants[i].totalMinionsKilled} ({csPerMinute.ToString("0.00")})");
@@ -1220,9 +1238,12 @@ namespace APIProject.Models
                         }
                         #endregion
                         package.itemIDList.Add(itemsToAdd);
-                        break;
                     }
+                    correctedChampNames.Add(CreateSummonerIconURLPath(rgd.info.participants[i].championName));   
+                    
                 }
+                //get the correct name path for each champ icon :/ cause riot cant name their champions correctly
+                summonerChampionImgPathTemp.Add(correctedChampNames);
                 gameIncrementCount++;
             }
 
@@ -1297,7 +1318,7 @@ namespace APIProject.Models
                 }
             }
 
-
+            package.summonerChampionImgPath = summonerChampionImgPathTemp;
             package.playerMatchDataList = thisPlayersMatchData;
 
             // Return the processed dat   

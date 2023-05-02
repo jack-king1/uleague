@@ -1,7 +1,15 @@
 ﻿
 @model SummonerDataAll
 @{
-    ViewData["Title"] = $"{Model.data.name}";
+    if(Model != null)
+    {
+        ViewData["Title"] = $"{Model.data.name}";
+
+    }
+    else
+    {
+        ViewData["Title"] = "search";
+    }
 }
 
 <!-- HTML Code -->
@@ -87,7 +95,7 @@
                             {
                                 <div class="d-flex flex-row justify-content-start w-100 ">
                                     <div class="summonerDetailsContainer ">
-                                            <img class="rounded w-100 h-100 " src="http://ddragon.leagueoflegends.com/cdn/13.8.1/img/champion/@(@Model.matchGameDataList[i].info.participants[j].championName).png" />
+                                            <img class="rounded w-100 h-100 " src="http://ddragon.leagueoflegends.com/cdn/13.8.1/img/champion/@(@Model.summonerChampionImgPath[i][j]).png" />
                                     </div>
                                     <div class="w-100 summonerListFontSize">@Model.matchGameDataList[i].info.participants[j].summonerName</div>
                                 </div>
@@ -98,7 +106,7 @@
                             {
                                 <div class="d-flex flex-row">
                                     <div class="summonerDetailsContainer me-1">
-                                            <img class="rounded w-100 h-100" src="http://ddragon.leagueoflegends.com/cdn/13.8.1/img/champion/@(@Model.matchGameDataList[i].info.participants[5+k].championName).png" />
+                                            <img class="rounded w-100 h-100" src="http://ddragon.leagueoflegends.com/cdn/13.8.1/img/champion/@(@Model.summonerChampionImgPath[i][5+k]).png" />
                                     </div>
                                     <div class="w-100 summonerListFontSize">@Model.matchGameDataList[i].info.participants[5+k].summonerName</div>
                                 </div>
