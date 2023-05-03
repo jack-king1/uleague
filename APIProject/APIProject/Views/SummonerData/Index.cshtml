@@ -59,7 +59,14 @@
                 <div class="info me-3">
                     <div class="details d-flex">
                         <div class="d-flex">
-                                    <div class="champIconContainer"><img class="rounded-circle w-100 h-100 img-fluid" src="http://ddragon.leagueoflegends.com/cdn/13.8.1/img/champion/@(Model.playerMatchDataList[i].championName).png" /></div>
+                                    <div class="champIconContainer">
+                                        <div class="position-relative">                                        
+                                            <img class="rounded-circle w-100 h-100 img-fluid" 
+                                            src="http://ddragon.leagueoflegends.com/cdn/13.8.1/img/champion/@(Model.playerMatchDataList[i].championName).png" />
+                                        <div class="position-absolute bottom-0 end-0 bg-black rounded-circle champLevel text-center fw-bold">@Model.championLevelList[i]</div> 
+                                    </div>
+
+                                        </div>
                             <div class="ms-4">
                                 <div class="summonerPerksContainer"><img class="rounded w-100 h-100 img-fluid" src="http://ddragon.leagueoflegends.com/cdn/13.8.1/img/spell/@(Model.summonerSpell1ImgPath[i])" /></div>
                                 <div class="summonerPerksContainer"><img class="rounded w-100 h-100 img-fluid" src="http://ddragon.leagueoflegends.com/cdn/13.8.1/img/spell/@(Model.summonerSpell2ImgPath[i])" /></div>
@@ -169,6 +176,11 @@
 .summonerPerksContainer{
     width: 32px;
     height: 32px;
+}
+
+.champLevel{
+    max-width: 24px;
+    max-height: 24px;
 }
 
 .summonerDetailsContainer {

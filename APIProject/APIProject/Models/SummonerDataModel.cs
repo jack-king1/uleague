@@ -453,6 +453,7 @@ namespace APIProject.Models
         public List<List<int>> itemIDList { get; set; }
 
         public List<List<string>> summonerChampionImgPath { get; set; }
+        public List<int?> championLevelList { get; set; }
 
     }
 
@@ -1107,6 +1108,7 @@ namespace APIProject.Models
             package.controlWardCount = new List<int?>();
             package.creepScore = new List<string>();
             package.itemIDList = new List<List<int>>();
+            package.championLevelList = new List<int?>();
             int gameIncrementCount = 0;
             foreach (RootGameData rgd in package.matchGameDataList)
             {
@@ -1161,6 +1163,7 @@ namespace APIProject.Models
                         package.kda.kills.Add((int)rgd.info.participants[i].kills);
                         package.kda.deaths.Add((int)rgd.info.participants[i].deaths);
                         package.kda.assists.Add((int)rgd.info.participants[i].assists);
+                        package.championLevelList.Add(rgd.info.participants[i].champLevel);
                         if(rgd.info.participants[i].challenges.killParticipation != null)
                         {
                             double percentage = (double)rgd.info.participants[i].challenges.killParticipation;
