@@ -29,15 +29,19 @@
 
 @if (Model != null)
 {
-    <section class="d-flex justify-content-center m-4 ">
+    <section class="d-flex justify-content-center mx-4 mt-4 ">
         <div class="mx-auto text-center">
-            <div class="imgContainer">
+            <div class="imgContainer position-relative ">
+                <div class="position-absolute px-4 bg-black bottom-0 translate-middle-x start-50 mx-auto rounded-pill bg-custom-primary">
+                    <div class="fw-bold fs-5">@Model.data.summonerLevel</div>
+                </div>
                 <img class="rounded-2 w-100 h-100 img-fluid" src="@Model.profileImgURL" />
             </div>
-            <div class="fw-bold fs-2">@Model.data.name</div>
-            <div class="fw-bold fs-3">Lv. @Model.data.summonerLevel</div>
+
         </div>
     </section>
+    <div class="d-flex text-center"><div class="mx-auto fw-bold fs-2">@Model.data.name</div></div>
+    
 
     <section>
         <h2>Match History</h2>
@@ -65,7 +69,6 @@
                                             src="http://ddragon.leagueoflegends.com/cdn/13.8.1/img/champion/@(Model.playerMatchDataList[i].championName).png" />
                                         <div class="position-absolute bottom-0 end-0 bg-black rounded-circle champLevel text-center fw-bold">@Model.championLevelList[i]</div> 
                                     </div>
-
                                         </div>
                             <div class="ms-4">
                                 <div class="summonerPerksContainer"><img class="rounded w-100 h-100 img-fluid" src="http://ddragon.leagueoflegends.com/cdn/13.8.1/img/spell/@(Model.summonerSpell1ImgPath[i])" /></div>
