@@ -115,8 +115,8 @@
                                     </div>
                                         <div class="w-100 summonerListFontSize">
                                             <form data-custom-value='@Model.matchGameDataList[i].info.participants[j].summonerName' 
-                                            class="summonerNameLink form-inline mt-4" method="post" action="/SummonerData/Summoner">
-                                                <button type="submit" class="btn text-white" >
+                                            class="summonerNameLink" method="post" action="/SummonerData/Summoner">
+                                                <button type="submit" class="btn text-white p-0" >
                                                     @Model.matchGameDataList[i].info.participants[j].summonerName</button>
                                             </form>
                                         </div>
@@ -130,7 +130,14 @@
                                     <div class="summonerDetailsContainer me-1">
                                             <img class="rounded w-100 h-100" src="http://ddragon.leagueoflegends.com/cdn/13.8.1/img/champion/@(@Model.summonerChampionImgPath[i][5+k]).png" />
                                     </div>
-                                    <div class="w-100 summonerListFontSize">@Model.matchGameDataList[i].info.participants[5+k].summonerName</div>
+                                        <div class="w-100 summonerListFontSize">
+                                            <form data-custom-value='@Model.matchGameDataList[i].info.participants[5+k].summonerName'
+                                                  class="summonerNameLink" method="post" action="/SummonerData/Summoner">
+                                                <button type="submit" class="btn text-white text-left p-0">
+                                                    @Model.matchGameDataList[i].info.participants[5+k].summonerName
+                                                </button>
+                                            </form>
+                                        </div>
                                 </div>
                             }
                     </div>
@@ -261,13 +268,11 @@
             console.log(f);
             f.addEventListener('submit', (event) => {
                 event.preventDefault();
-
                 // Get the searchQuery value from the form
-                var name = f.getAttribute('data-custom-attribute');
+                let name = f.getAttribute('data-custom-value');
                 console.log(name);
-                // Modify the action URL to append the searchQuery as a query string
-                f.action = '/SummonerData/Summoner?name=' + encodeURIComponent(name);
-
+                // Modify the action URL to append the searchQuery as a query string encodeURIComponent(name)
+                f.action = '/SummonerData/Summoner?name=' + name;
                 // Submit the form
                 f.submit();
             });
