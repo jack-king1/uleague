@@ -958,7 +958,7 @@ namespace APIProject.Models
 
         string CreateSummonerIconURLPath(string championName)
         {
-            if(championName != "JarvanIV" && championName != "MasterYi" && championName != "MissFortune" && championName != "Lee Sin" 
+            if(championName != "JarvanIV" && championName != "MasterYi" && championName != "MissFortune" && championName != "LeeSin" 
                 && championName != "AurelionSol" && championName != "DrMundo")
             {
                 string tempName = championName.Substring(0, 1).ToUpper() + championName.Substring(1).ToLower();

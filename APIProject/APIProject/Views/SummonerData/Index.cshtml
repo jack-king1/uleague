@@ -1,4 +1,10 @@
-﻿
+﻿fetch(url, {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json"
+    }
+  })
 @model SummonerDataAll
 @{
     if(Model != null)
@@ -32,8 +38,8 @@
     <section class="d-flex justify-content-center mx-4 mt-4 ">
         <div class="mx-auto text-center">
             <div class="imgContainer position-relative ">
-                <div class="position-absolute px-4 bg-black bottom-0 translate-middle-x start-50 mx-auto rounded-pill bg-custom-primary">
-                    <div class="fw-bold fs-5">@Model.data.summonerLevel</div>
+                <div class="position-absolute px-3 bottom-0 bgcustom-primary translate-middle-x start-50 mx-auto rounded-pill bg-custom-primary">
+                    <div class="fw-bold">@Model.data.summonerLevel</div>
                 </div>
                 <img class="rounded-2 w-100 h-100 img-fluid" src="@Model.profileImgURL" />
             </div>
@@ -107,7 +113,13 @@
                                     <div class="summonerDetailsContainer ">
                                             <img class="rounded w-100 h-100 " src="http://ddragon.leagueoflegends.com/cdn/13.8.1/img/champion/@(@Model.summonerChampionImgPath[i][j]).png" />
                                     </div>
-                                    <div class="w-100 summonerListFontSize">@Model.matchGameDataList[i].info.participants[j].summonerName</div>
+                                        <div class="w-100 summonerListFontSize">
+                                            <form data-custom-value='@Model.matchGameDataList[i].info.participants[j].summonerName' 
+                                            class="summonerNameLink form-inline mt-4" method="post" action="/SummonerData/Summoner">
+                                                <button type="submit" class="btn text-white" >
+                                                    @Model.matchGameDataList[i].info.participants[j].summonerName</button>
+                                            </form>
+                                        </div>
                                 </div>
                             }
                     </div>
@@ -221,6 +233,7 @@
 
 
 <script>
+
     // Get the form element by ID
     var form = document.getElementById('searchForm');
 
@@ -238,6 +251,28 @@
         // Submit the form
         form.submit();
     });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log("DOcument Loaded!")
+        let forms = document.querySelectorAll('.summonerNameLink');
+        //console.log(forms);
+
+        forms.forEach((f) => {
+            console.log(f);
+            f.addEventListener('submit', (event) => {
+                event.preventDefault();
+
+                // Get the searchQuery value from the form
+                var name = f.getAttribute('data-custom-attribute');
+                console.log(name);
+                // Modify the action URL to append the searchQuery as a query string
+                f.action = '/SummonerData/Summoner?name=' + encodeURIComponent(name);
+
+                // Submit the form
+                f.submit();
+            });
+        });
+    })
 </script>
 
 
