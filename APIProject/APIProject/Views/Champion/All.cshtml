@@ -7,6 +7,8 @@
 
 <div class="navbarGap pt-4">
     <div class="mt-4 row">
+       @if(@Model != null)
+        {
         @foreach (KeyValuePair<string, Champion> entry in Model)
         {
             <div class="flex flex-row col-6 col-xs-6 col-sm-6 col-md-2 cursor-pointer mb-3">
@@ -16,6 +18,8 @@
                 <div class="text-center fw-bold">@entry.Value.name</div>
             </div>
         }
+        }
+
     </div>
 
 </div>

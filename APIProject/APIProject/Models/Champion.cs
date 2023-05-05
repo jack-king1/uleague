@@ -57,27 +57,8 @@ namespace APIProject.Models
             {
                 await GlobalSummonerData.LoadData();
             }
-
-            Dictionary<string, Champion> champions = new Dictionary<string, Champion>();
-            // Create an instance of the API service
-            var riotAPIService = new RiotAPIService();
-
-            // Call the API service method to retrieve data
-            dynamic jsonDataString = await riotAPIService.GetAllChampionDataAsync(GlobalSummonerData.patchVersion.PatchVersionsList[0]);
-
-            try
-            {
-                // ... process the retrieved data as needed ...
-                champions = JObject.Parse(jsonDataString)["data"].ToObject<Dictionary<string, Champion>>();
-            }
-            catch (Exception ex)
-            {
-                // Handle any exceptions
-                Console.WriteLine($"Error: {ex.Message}");
-                return null;
-            }
             // Return the processed data
-            return champions;
+            return GlobalSummonerData.allChampionData;
         }
 
         public async Task<dynamic> GetChampionDataFromApiAsync(string champName)

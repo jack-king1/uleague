@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.TagHelpers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Globalization;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 using static APIProject.Models.MatchGameData;
@@ -34,6 +35,7 @@ namespace APIProject.Models
         public static async Task<dynamic> LoadData()
         {
             RiotAPIService riotAPIService = new RiotAPIService();
+            
             SummonerSpellData = new SummonerSpellData.Root();
             RuneData = new List<RuneData.RuneDataRoot>();
             matchQueueTypes = new List<MatchQueueType>();
@@ -55,6 +57,23 @@ namespace APIProject.Models
                 return null;
             }
             #endregion
+
+            #region ChampionData
+            dynamic jsonDataString = await riotAPIService.GetAllChampionDataAsync(patchVersion.PatchVersionsList[0]);
+
+            try
+            {
+                // ... process the retrieved data as needed ...
+                allChampionData = JObject.Parse(jsonDataString)["data"].ToObject<Dictionary<string, Champion>>();
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions
+                Console.WriteLine($"Error: {ex.Message}");
+                return null;
+            }
+            #endregion
+
             #region SummonerSpell
             //Summoner Data
             dynamic jsonSummonerSpellData = await riotAPIService.GetSummonerSpellDataASync(patchVersion.PatchVersionsList[0]);
@@ -109,6 +128,8 @@ namespace APIProject.Models
         public static List<MatchQueueType> matchQueueTypes { get; set; }
 
         public static PatchVersions patchVersion { get; set; }
+
+        public static Dictionary<string, Champion> allChampionData = new Dictionary<string, Champion>();
     }
 
     public class MatchQueueType
@@ -1048,20 +1069,22 @@ namespace APIProject.Models
 
     public class SummonerDataModel
     {
-        string profileImgURL = $"http://ddragon.leagueoflegends.com/cdn/{GlobalSummonerData.patchVersion.PatchVersionsList[0]}/img/profileicon/";
-        string CreateSummonerIconURLPath(string championName, string currentPatch)
+
+        
+        string CreateSummonerIconURLPath(int championID, string currentPatch)
         {        
-            if(championName != "JarvanIV" && championName != "MasterYi" && championName != "MissFortune" && championName != "LeeSin" 
-                && championName != "AurelionSol" && championName != "DrMundo" && championName != "MonkeyKing" && championName != "TwistedFate" 
-                && championName != "TahmKench" && championName != "KSante" && championName != "RekSai")
+            if(GlobalSummonerData.allChampionData.Count > 0)
             {
-                string tempName = championName.Substring(0, 1).ToUpper() + championName.Substring(1).ToLower();
-                return tempName;
+                foreach (KeyValuePair<string, Champion> champ in GlobalSummonerData.allChampionData)
+                {
+                    if(int.Parse(champ.Value.key) == championID)
+                    {
+                        return champ.Value.id;
+                    }
+                }
             }
-            else
-            {
-                return championName;
-            }
+
+            return null;
         }
 
         [HttpPost]
@@ -1133,6 +1156,7 @@ namespace APIProject.Models
             List<int?> summonerSpell0List = new List<int?>();
             List<int?> summonerSpell1List = new List<int?>();
             List<List<string>> summonerChampionImgPathTemp = new List<List<string>>();
+            string profileImgURL = $"http://ddragon.leagueoflegends.com/cdn/{GlobalSummonerData.patchVersion.PatchVersionsList[0]}/img/profileicon/";
 
             SummonerDataAll package = new SummonerDataAll();
             package.data = summonerData;
@@ -1286,7 +1310,7 @@ namespace APIProject.Models
                         #endregion
                         package.itemIDList.Add(itemsToAdd);
                     }
-                    correctedChampNames.Add(CreateSummonerIconURLPath(rgd.info.participants[i].championName, 
+                    correctedChampNames.Add(CreateSummonerIconURLPath((int)rgd.info.participants[i].championId, 
                         GlobalSummonerData.patchVersion.PatchVersionsList[0]));
                 }
                 //get the correct name path for each champ icon :/ cause riot cant name their champions correctly
