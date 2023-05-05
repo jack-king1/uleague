@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.TagHelpers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Globalization;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 using static APIProject.Models.MatchGameData;
 
@@ -17,6 +18,92 @@ namespace APIProject.Models
     }
     public static class GlobalSummonerData
     {
+        public static bool IsLoaded()
+        {
+            if (SummonerSpellData == null || RuneData == null ||
+                matchQueueTypes == null || patchVersion == null)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        public static async Task<dynamic> LoadData()
+        {
+            RiotAPIService riotAPIService = new RiotAPIService();
+            SummonerSpellData = new SummonerSpellData.Root();
+            RuneData = new List<RuneData.RuneDataRoot>();
+            matchQueueTypes = new List<MatchQueueType>();
+            patchVersion = new PatchVersions();
+            patchVersion.PatchVersionsList = new List<string>();
+
+            #region PatchVersion
+            //patch Data
+            dynamic jsonPatchVersionData = await riotAPIService.GetPatchVersionsDataASync();
+            try
+            {
+                // ... process the retrieved data as needed ...
+                patchVersion.PatchVersionsList = JsonConvert.DeserializeObject<List<string>>(jsonPatchVersionData);
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions
+                Console.WriteLine($"Error: {ex.Message}");
+                return null;
+            }
+            #endregion
+            #region SummonerSpell
+            //Summoner Data
+            dynamic jsonSummonerSpellData = await riotAPIService.GetSummonerSpellDataASync(patchVersion.PatchVersionsList[0]);
+            try
+            {
+                // ... process the retrieved data as needed ...
+                //GlobalSummonerData.SummonerSpellData = JObject.Parse(jsonSummonerSpellData).ToObject<SummonerSpellData.Root>();
+                SummonerSpellData = JsonConvert.DeserializeObject<SummonerSpellData.Root>(jsonSummonerSpellData);
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions
+                Console.WriteLine($"Error: {ex.Message}");
+                return null;
+            }
+            #endregion
+            #region RuneData
+            //Rune Data
+            dynamic jsonRuneData = await riotAPIService.GetRuneDataASync(patchVersion.PatchVersionsList[0]);
+            try
+            {
+                // ... process the retrieved data as needed ...
+                RuneData = JsonConvert.DeserializeObject<List<RuneData.RuneDataRoot>>(jsonRuneData);
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions
+                Console.WriteLine($"Error: {ex.Message}");
+                return null;
+            }
+            #endregion
+            #region MatchTypes
+            //Rune Data
+            dynamic jsonMatchTypeData = await riotAPIService.GetMatchTypeDataASync();
+            try
+            {
+                // ... process the retrieved data as needed ...
+                matchQueueTypes = JsonConvert.DeserializeObject<List<MatchQueueType>>(jsonMatchTypeData);
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions
+                Console.WriteLine($"Error: {ex.Message}");
+                return null;
+            }
+
+            return null;
+            #endregion
+        }
         public static List<RuneData.RuneDataRoot> RuneData { get; set; }
         public static SummonerSpellData.Root SummonerSpellData { get; set; }
         public static List<MatchQueueType> matchQueueTypes { get; set; }
@@ -988,81 +1075,9 @@ namespace APIProject.Models
             var riotAPIService = new RiotAPIService();
 
             //Check if global data is available
-            if (GlobalSummonerData.SummonerSpellData == null || GlobalSummonerData.RuneData == null || 
-                GlobalSummonerData.matchQueueTypes == null || GlobalSummonerData.patchVersion == null)
+            if (!GlobalSummonerData.IsLoaded())
             {
-                GlobalSummonerData.SummonerSpellData = new SummonerSpellData.Root();
-                GlobalSummonerData.RuneData = new List<RuneData.RuneDataRoot>();
-                GlobalSummonerData.matchQueueTypes = new List<MatchQueueType>();
-                GlobalSummonerData.patchVersion = new PatchVersions();
-                GlobalSummonerData.patchVersion.PatchVersionsList = new List<string>();
-
-                #region PatchVersion
-                //patch Data
-                dynamic jsonPatchVersionData = await riotAPIService.GetPatchVersionsDataASync();
-                try
-                {
-                    // ... process the retrieved data as needed ...
-                    GlobalSummonerData.patchVersion.PatchVersionsList = JsonConvert.DeserializeObject<List<string>>(jsonPatchVersionData);
-                }
-                catch (Exception ex)
-                {
-                    // Handle any exceptions
-                    Console.WriteLine($"Error: {ex.Message}");
-                    return null;
-                }
-                #endregion
-
-
-                #region SummonerSpell
-                //Summoner Data
-                dynamic jsonSummonerSpellData = await riotAPIService.GetSummonerSpellDataASync(GlobalSummonerData.patchVersion.PatchVersionsList[0]);
-                try
-                {
-                    // ... process the retrieved data as needed ...
-                    //GlobalSummonerData.SummonerSpellData = JObject.Parse(jsonSummonerSpellData).ToObject<SummonerSpellData.Root>();
-                    GlobalSummonerData.SummonerSpellData = JsonConvert.DeserializeObject<SummonerSpellData.Root>(jsonSummonerSpellData);
-                }
-                catch (Exception ex)
-                {
-                    // Handle any exceptions
-                    Console.WriteLine($"Error: {ex.Message}");
-                    return null;
-                }
-                #endregion
-                #region RuneData
-                //Rune Data
-                dynamic jsonRuneData = await riotAPIService.GetRuneDataASync(GlobalSummonerData.patchVersion.PatchVersionsList[0]);
-                try
-                {
-                    // ... process the retrieved data as needed ...
-                    GlobalSummonerData.RuneData = JsonConvert.DeserializeObject<List<RuneData.RuneDataRoot>>(jsonRuneData);
-                }
-                catch (Exception ex)
-                {
-                    // Handle any exceptions
-                    Console.WriteLine($"Error: {ex.Message}");
-                    return null;
-                }
-                #endregion
-
-                #region MatchTypes
-                //Rune Data
-                dynamic jsonMatchTypeData = await riotAPIService.GetMatchTypeDataASync();
-                try
-                {
-                    // ... process the retrieved data as needed ...
-                    GlobalSummonerData.matchQueueTypes = JsonConvert.DeserializeObject<List<MatchQueueType>>(jsonMatchTypeData);
-                }
-                catch (Exception ex)
-                {
-                    // Handle any exceptions
-                    Console.WriteLine($"Error: {ex.Message}");
-                    return null;
-                }
-                #endregion
-
-
+               await GlobalSummonerData.LoadData();
             }
 
             // Call the API service method to retrieve data

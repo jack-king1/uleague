@@ -53,6 +53,11 @@ namespace APIProject.Models
     {
         public async Task<dynamic> GetAllChampionDataFromApiAsync()
         {
+            if(!GlobalSummonerData.IsLoaded())
+            {
+                await GlobalSummonerData.LoadData();
+            }
+
             Dictionary<string, Champion> champions = new Dictionary<string, Champion>();
             // Create an instance of the API service
             var riotAPIService = new RiotAPIService();

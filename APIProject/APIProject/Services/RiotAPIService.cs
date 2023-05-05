@@ -49,15 +49,14 @@ namespace APIProject.Services
         {
             try
             {
-               string apiUrl = $"{url}{currentPatch}/data/{region}/champion/{name}.json"; // Replace with your API URL
-               using (StreamReader reader = new StreamReader(apiUrl))
-                {
-                    string json = reader.ReadToEndAsync().Result; // Read the entire file content as a string
-                    //MyObject myObject = JsonConvert.DeserializeObject<MyObject>(json); // Deserialize the JSON string into an object
-                    // Do something with the deserialized object (e.g., bind it to a data source, display it in UI, etc.)
-                    return json;
-                }
 
+                string apiUrl = $"{url}{currentPatch}/data/{region}/champion/{name}.json"; // Replace with your API URL
+                HttpResponseMessage response = await _httpClient.GetAsync(apiUrl);
+                response.EnsureSuccessStatusCode(); // Throw an exception if response is not successful
+
+                //json string which can be converted into c# object using deserialization.
+                string json = await response.Content.ReadAsStringAsync();
+                return json;
             }
             catch (Exception ex)
             {
