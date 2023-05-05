@@ -58,7 +58,7 @@ namespace APIProject.Models
             var riotAPIService = new RiotAPIService();
 
             // Call the API service method to retrieve data
-            dynamic jsonDataString = await riotAPIService.GetAllChampionDataAsync();
+            dynamic jsonDataString = await riotAPIService.GetAllChampionDataAsync(GlobalSummonerData.patchVersion.PatchVersionsList[0]);
 
             try
             {
@@ -82,7 +82,7 @@ namespace APIProject.Models
             var riotAPIService = new RiotAPIService();
 
             // Call the API service method to retrieve data
-            dynamic jsonDataString = await riotAPIService.GetChampionDataAsync(champName);
+            dynamic jsonDataString = await riotAPIService.GetChampionDataAsync(champName, GlobalSummonerData.patchVersion.PatchVersionsList[0]);
 
 
 

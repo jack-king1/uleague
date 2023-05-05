@@ -10,11 +10,18 @@ using static APIProject.Models.MatchGameData;
 
 namespace APIProject.Models
 {
+
+    public class PatchVersions
+    {
+        public List<string> PatchVersionsList { get; set; }
+    }
     public static class GlobalSummonerData
     {
         public static List<RuneData.RuneDataRoot> RuneData { get; set; }
         public static SummonerSpellData.Root SummonerSpellData { get; set; }
         public static List<MatchQueueType> matchQueueTypes { get; set; }
+
+        public static PatchVersions patchVersion { get; set; }
     }
 
     public class MatchQueueType
@@ -954,10 +961,9 @@ namespace APIProject.Models
 
     public class SummonerDataModel
     {
-        private string profileImgURL = "http://ddragon.leagueoflegends.com/cdn/13.8.1/img/profileicon/";
-
-        string CreateSummonerIconURLPath(string championName)
-        {
+        string profileImgURL = $"http://ddragon.leagueoflegends.com/cdn/{GlobalSummonerData.patchVersion.PatchVersionsList[0]}/img/profileicon/";
+        string CreateSummonerIconURLPath(string championName, string currentPatch)
+        {        
             if(championName != "JarvanIV" && championName != "MasterYi" && championName != "MissFortune" && championName != "LeeSin" 
                 && championName != "AurelionSol" && championName != "DrMundo" && championName != "MonkeyKing" && championName != "TwistedFate" 
                 && championName != "TahmKench" && championName != "KSante" && championName != "RekSai")
@@ -969,7 +975,6 @@ namespace APIProject.Models
             {
                 return championName;
             }
-
         }
 
         [HttpPost]
@@ -983,14 +988,35 @@ namespace APIProject.Models
             var riotAPIService = new RiotAPIService();
 
             //Check if global data is available
-            if (GlobalSummonerData.SummonerSpellData == null || GlobalSummonerData.RuneData == null || GlobalSummonerData.matchQueueTypes == null)
+            if (GlobalSummonerData.SummonerSpellData == null || GlobalSummonerData.RuneData == null || 
+                GlobalSummonerData.matchQueueTypes == null || GlobalSummonerData.patchVersion == null)
             {
                 GlobalSummonerData.SummonerSpellData = new SummonerSpellData.Root();
                 GlobalSummonerData.RuneData = new List<RuneData.RuneDataRoot>();
                 GlobalSummonerData.matchQueueTypes = new List<MatchQueueType>();
+                GlobalSummonerData.patchVersion = new PatchVersions();
+                GlobalSummonerData.patchVersion.PatchVersionsList = new List<string>();
+
+                #region PatchVersion
+                //patch Data
+                dynamic jsonPatchVersionData = await riotAPIService.GetPatchVersionsDataASync();
+                try
+                {
+                    // ... process the retrieved data as needed ...
+                    GlobalSummonerData.patchVersion.PatchVersionsList = JsonConvert.DeserializeObject<List<string>>(jsonPatchVersionData);
+                }
+                catch (Exception ex)
+                {
+                    // Handle any exceptions
+                    Console.WriteLine($"Error: {ex.Message}");
+                    return null;
+                }
+                #endregion
+
+
                 #region SummonerSpell
                 //Summoner Data
-                dynamic jsonSummonerSpellData = await riotAPIService.GetSummonerSpellDataASync();
+                dynamic jsonSummonerSpellData = await riotAPIService.GetSummonerSpellDataASync(GlobalSummonerData.patchVersion.PatchVersionsList[0]);
                 try
                 {
                     // ... process the retrieved data as needed ...
@@ -1006,7 +1032,7 @@ namespace APIProject.Models
                 #endregion
                 #region RuneData
                 //Rune Data
-                dynamic jsonRuneData = await riotAPIService.GetRuneDataASync();
+                dynamic jsonRuneData = await riotAPIService.GetRuneDataASync(GlobalSummonerData.patchVersion.PatchVersionsList[0]);
                 try
                 {
                     // ... process the retrieved data as needed ...
@@ -1035,6 +1061,8 @@ namespace APIProject.Models
                     return null;
                 }
                 #endregion
+
+
             }
 
             // Call the API service method to retrieve data
@@ -1243,8 +1271,8 @@ namespace APIProject.Models
                         #endregion
                         package.itemIDList.Add(itemsToAdd);
                     }
-                    correctedChampNames.Add(CreateSummonerIconURLPath(rgd.info.participants[i].championName));   
-                    
+                    correctedChampNames.Add(CreateSummonerIconURLPath(rgd.info.participants[i].championName, 
+                        GlobalSummonerData.patchVersion.PatchVersionsList[0]));
                 }
                 //get the correct name path for each champ icon :/ cause riot cant name their champions correctly
                 summonerChampionImgPathTemp.Add(correctedChampNames);
@@ -1337,7 +1365,7 @@ namespace APIProject.Models
             var riotAPIService = new RiotAPIService();
 
             // Call the API service method to retrieve data
-            dynamic jsonSpellData = await riotAPIService.GetSummonerSpellDataASync();
+            dynamic jsonSpellData = await riotAPIService.GetSummonerSpellDataASync(GlobalSummonerData.patchVersion.PatchVersionsList[0]);
 
             try
             {
@@ -1360,7 +1388,7 @@ namespace APIProject.Models
             var riotAPIService = new RiotAPIService();
 
             // Call the API service method to retrieve data
-            dynamic jsonSpellData = await riotAPIService.GetRuneDataASync();
+            dynamic jsonSpellData = await riotAPIService.GetRuneDataASync(GlobalSummonerData.patchVersion.PatchVersionsList[0]);
 
 
             try
@@ -1425,6 +1453,31 @@ namespace APIProject.Models
 
             // Return the processed data
             return playerMatchIDs;
+        }
+
+        public async Task<dynamic> GetGameVersionsFromApiAsync()
+        {
+            PatchVersions gameVersions = new PatchVersions();
+            // Create an instance of the API service
+            var riotAPIService = new RiotAPIService();
+
+            // Call the API service method to retrieve data
+            dynamic jsonDataString = await riotAPIService.GetPatchVersionsDataASync();
+
+            try
+            {
+                // ... process the retrieved data as needed ...
+                gameVersions = JObject.Parse(jsonDataString).ToObject<PatchVersions>();
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions
+                Console.WriteLine($"Error: {ex.Message}");
+                return null;
+            }
+
+            // Return the processed data
+            return gameVersions;
         }
     }
 }
