@@ -12,7 +12,7 @@ namespace APIProject.Services
 
         private HttpClient _httpClient;
 
-        private string riotAPIKey = "RGAPI-73f1313c-f338-4dcf-af5f-8b33dc2ef73d";
+        private string riotAPIKey = "RGAPI-aaa77825-34c2-4469-b6b3-b3d4e04cdfd9";
 
 
         public RiotAPIService()
@@ -51,6 +51,26 @@ namespace APIProject.Services
             {
 
                 string apiUrl = $"{url}{currentPatch}/data/{region}/champion/{name}.json"; // Replace with your API URL
+                HttpResponseMessage response = await _httpClient.GetAsync(apiUrl);
+                response.EnsureSuccessStatusCode(); // Throw an exception if response is not successful
+
+                //json string which can be converted into c# object using deserialization.
+                string json = await response.Content.ReadAsStringAsync();
+                return json;
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions
+                Console.WriteLine($"Error: {ex.Message}");
+                return null;
+            }
+        }
+
+        public async Task<dynamic> GetChampionAlternativeDataAsync(string name)
+        {      
+            try
+            {
+                string apiUrl = $"https://cdn.merakianalytics.com/riot/lol/resources/latest/en-US/champions/{name}.json"; // Replace with your API URL
                 HttpResponseMessage response = await _httpClient.GetAsync(apiUrl);
                 response.EnsureSuccessStatusCode(); // Throw an exception if response is not successful
 

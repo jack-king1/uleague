@@ -3,8 +3,10 @@
 *@
 @model ChampionDetailModel;
 @{
-    <div class="">
-        <img class="img-fluid w-100 rounded-3" src="@("http://ddragon.leagueoflegends.com/cdn/img/champion/splash/" + Model.detail.id + "_0.jpg")"></img>
+
+    <div class="pt-4 mt-4">
+    <div class="mt-4 pt-4">
+        <img class="img-fluid full-width rounded-3" src="@("http://ddragon.leagueoflegends.com/cdn/img/champion/splash/" + Model.detail.id + "_0.jpg")"></img>
     </div>
     <div class="fs-1">@Model.detail.name</div>
     <div class="fs-2">@Model.detail.title</div>
@@ -44,34 +46,74 @@
         </div>
     </div>
 
+
+
     <section class="text-left fs-4 mt-3">@Model.detail.lore</section>
 
-    <section class="d-flex flex-column flex-md-row justify-content-around mt-4">
-        <div class="d-flex flex-column justify-content-start">
-            <h4 class="text-left text-md-center d-md-none">Passive</h4>
-            <div class="justify-content-start"><img class="img-fluid rounded align-self-start mx-auto" src="@("http://ddragon.leagueoflegends.com/cdn/13.8.1/img/passive/" + Model.detail.passive.image.full)" />
+        <ul class="nav nav-tabs mt-3" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="passive-tab" data-bs-toggle="tab" data-bs-target="#passive" type="button" role="tab" aria-controls="passive" aria-selected="true">
+                    <img class="img-fluid rounded align-self-start mx-auto" src="@("http://ddragon.leagueoflegends.com/cdn/13.8.1/img/passive/" + Model.detail.passive.image.full)" />
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="spell0-tab" data-bs-toggle="tab" data-bs-target="#spell0" type="button" role="tab" aria-controls="spell0" aria-selected="false">
+                    <img class="img-fluid rounded align-self-start mx-auto" src="@("http://ddragon.leagueoflegends.com/cdn/13.8.1/img/spell/" + Model.detail.spells[0].image.full)" />
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="spell1-tab" data-bs-toggle="tab" data-bs-target="#spell1" type="button" role="tab" aria-controls="spell1" aria-selected="false">
+                    <img class="img-fluid rounded align-self-start mx-auto" src="@("http://ddragon.leagueoflegends.com/cdn/13.8.1/img/spell/" + Model.detail.spells[1].image.full)" />
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="spell2-tab" data-bs-toggle="tab" data-bs-target="#spell2" type="button" role="tab" aria-controls="spell2" aria-selected="false">
+                    <img class="img-fluid rounded align-self-start mx-auto" src="@("http://ddragon.leagueoflegends.com/cdn/13.8.1/img/spell/" + Model.detail.spells[2].image.full)" />
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="spell3-tab" data-bs-toggle="tab" data-bs-target="#spell3" type="button" role="tab" aria-controls="spell3" aria-selected="false">
+                    <img class="img-fluid rounded align-self-start mx-auto" src="@("http://ddragon.leagueoflegends.com/cdn/13.8.1/img/spell/" + Model.detail.spells[3].image.full)" />
+                </button>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="passive" role="tabpanel" aria-labelledby="passive-tab">
+                <h3>@Model.detail.passive.name</h3>
+                @for (int spellDesc = 0; spellDesc < Model.champAbilities.P[0].effects.Count; spellDesc++)
+                {
+                    <div class="mb-3">@Model.champAbilities.P[0].effects[spellDesc].description</div>
+                }
             </div>
-            
-        </div>
+            <div class="tab-pane fade" id="spell0" role="tabpanel" aria-labelledby="spell0-tab">
+            <h3>@Model.detail.spells[0].name</h3>
+            @for (int spellDesc = 0; spellDesc < Model.champAbilities.Q[0].effects.Count; spellDesc++)
+            {
+                <div class="mb-3">@Model.champAbilities.Q[0].effects[spellDesc].description</div>
+            }
+            </div>
+            <div class="tab-pane fade" id="spell1" role="tabpanel" aria-labelledby="spell1-tab">
+                <h3>@Model.detail.spells[1].name</h3>
+                @for(int spellDesc = 0; spellDesc < Model.champAbilities.W[0].effects.Count; spellDesc++)
+                {
+                    <div class="mb-3">@Model.champAbilities.W[0].effects[spellDesc].description</div>
+                }
+            </div>
+            <div class="tab-pane fade" id="spell2" role="tabpanel" aria-labelledby="spell2-tab">
+                <h3>@Model.detail.spells[2].name</h3>
+                @for (int spellDesc = 0; spellDesc < Model.champAbilities.E[0].effects.Count; spellDesc++)
+                {
+                    <div class="mb-3">@Model.champAbilities.E[0].effects[spellDesc].description</div>
+                }
+            </div>
+            <div class="tab-pane fade" id="spell3" role="tabpanel" aria-labelledby="spell3-tab">
+                <h3>@Model.detail.spells[3].name</h3>
+                @for (int spellDesc = 0; spellDesc < Model.champAbilities.R[0].effects.Count; spellDesc++)
+                {
+                    <div class="mb-3">@Model.champAbilities.R[0].effects[spellDesc].description</div>
+                }
+            </div>
+         </div>
 
-        <div class="d-flex flex-column">
-            <h4 class="flex-2 text-center d-md-none">@Model.detail.spells[0].name</h4>
-            <img class="img-fluid rounded align-self-start mx-auto" src="@("http://ddragon.leagueoflegends.com/cdn/13.8.1/img/spell/" + Model.detail.spells[0].image.full)" />
-        </div>
-
-        <div class="d-flex flex-column">
-            <h4 class="flex-2 text-center text-md-start d-md-none">@Model.detail.spells[1].name</h4>
-            <img class="img-fluid rounded align-self-start mx-auto h-100" src="@("http://ddragon.leagueoflegends.com/cdn/13.8.1/img/spell/" + Model.detail.spells[1].image.full)" />
-        </div>
-
-        <div class="d-flex flex-column">
-            <h4 class="flex-2 text-center d-md-none">@Model.detail.spells[2].name</h4>
-            <img class="img-fluid rounded align-self-start mx-auto" src="@("http://ddragon.leagueoflegends.com/cdn/13.8.1/img/spell/" + Model.detail.spells[2].image.full)" />
-        </div>
-
-        <div class="d-flex flex-column">
-            <h4 class="flex-2 text-center d-md-none">@Model.detail.spells[3].name</h4>
-            <img class="img-fluid rounded align-self-start mx-auto" src="@("http://ddragon.leagueoflegends.com/cdn/13.8.1/img/spell/" + Model.detail.spells[3].image.full)" />
-        </div>
-    </section>
+    </div>
 }
