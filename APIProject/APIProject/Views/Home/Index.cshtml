@@ -7,11 +7,17 @@
         <div class="d-flex justify-content-center align-items-center w-100 d-flex flex-column my-auto">
         <img class="mx-auto logo mb-4 border-top border-bottom border-secondary border-2" src="~/data/images/logo.png" />
             <form class="form-inline w-100 px-4" method="post" action="/SummonerData/Summoner" id="searchForm">
+
                 <div class="input-group">
+                <div class="d-flex bg-secondary text-center py-3 px-1 rounded-start"><div class="my-auto">GB</div></div>
+                <button class="btn btn-secondary btn-lg py-3 " type="submit">
+                    <img src="~/data/icons/downarrow.png" />
+                </button>
                     <input class="form-control form-control-lg py-3" type="search" placeholder="Search" aria-label="Search" name="searchQuery">
                     <div class="input-group-append">
                         <button class="btn btn-primary custom-primary btn-lg py-3 px-4" type="submit">Search</button>
                     </div>
+
                 </div>
             </form>
             <div class="mx-auto fw-bold fs-3 text-secondary mt-4">Find Summoner Match History!</div>

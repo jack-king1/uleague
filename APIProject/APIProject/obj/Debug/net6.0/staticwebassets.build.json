@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "bD6gwt21N+t0iQZ1lM8WGIjO2ZYh/6psl2dV3m2OQew=",
+  "Hash": "8UzLxcWvLTBVzz92GPtLPLPbpnOxpW7Yq3p1wciCRG8=",
   "Source": "APIProject",
   "BasePath": "_content/APIProject",
   "Mode": "Default",
@@ -83,6 +83,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\data\\.gitignore"
+    },
+    {
+      "Identity": "E:\\Github\\AspNetApi\\APIProject\\APIProject\\wwwroot\\data\\icons\\downarrow.png",
+      "SourceId": "APIProject",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\Github\\AspNetApi\\APIProject\\APIProject\\wwwroot\\",
+      "BasePath": "_content/APIProject",
+      "RelativePath": "data/icons/downarrow.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\data\\icons\\downarrow.png"
     },
     {
       "Identity": "E:\\Github\\AspNetApi\\APIProject\\APIProject\\wwwroot\\data\\images\\logo.png",

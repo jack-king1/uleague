@@ -13,6 +13,10 @@
       "PackagePath": "staticwebassets\\data\\.gitignore"
     },
     {
+      "Id": "E:\\Github\\AspNetApi\\APIProject\\APIProject\\wwwroot\\data\\icons\\downarrow.png",
+      "PackagePath": "staticwebassets\\data\\icons\\downarrow.png"
+    },
+    {
       "Id": "E:\\Github\\AspNetApi\\APIProject\\APIProject\\wwwroot\\data\\images\\logo.png",
       "PackagePath": "staticwebassets\\data\\images\\logo.png"
     },

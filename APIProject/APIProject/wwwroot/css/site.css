@@ -21,6 +21,10 @@ body {
 .logo{
     max-height: 4rem;
 }
+.logo-footer {
+    max-height: 2rem;
+}
+
 
 .navbarGap {
     margin-top: 5rem;
