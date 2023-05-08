@@ -12,14 +12,13 @@ namespace APIProject.Services
 
         private HttpClient _httpClient;
 
-        private string riotAPIKey = "RGAPI-aaa77825-34c2-4469-b6b3-b3d4e04cdfd9";
+        private string riotAPIKey = "RGAPI-d895271e-da89-4638-8552-45da3102cb76";
 
 
         public RiotAPIService()
         {
             _httpClient = new HttpClient();
             //Get global data for riot api such as summoner spells and rune data
-
         }
 
         //Get all league champion data.

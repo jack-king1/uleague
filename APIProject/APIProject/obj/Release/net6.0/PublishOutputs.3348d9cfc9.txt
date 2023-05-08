@@ -1,0 +1,8 @@
+E:\Github\AspNetApi\APIProject\APIProject\obj\Release\net6.0\PubTmp\Out\APIProject.exe
+E:\Github\AspNetApi\APIProject\APIProject\obj\Release\net6.0\PubTmp\Out\appsettings.Development.json
+E:\Github\AspNetApi\APIProject\APIProject\obj\Release\net6.0\PubTmp\Out\appsettings.json
+E:\Github\AspNetApi\APIProject\APIProject\obj\Release\net6.0\PubTmp\Out\APIProject.dll
+E:\Github\AspNetApi\APIProject\APIProject\obj\Release\net6.0\PubTmp\Out\APIProject.deps.json
+E:\Github\AspNetApi\APIProject\APIProject\obj\Release\net6.0\PubTmp\Out\APIProject.runtimeconfig.json
+E:\Github\AspNetApi\APIProject\APIProject\obj\Release\net6.0\PubTmp\Out\APIProject.pdb
+E:\Github\AspNetApi\APIProject\APIProject\obj\Release\net6.0\PubTmp\Out\Newtonsoft.Json.dll

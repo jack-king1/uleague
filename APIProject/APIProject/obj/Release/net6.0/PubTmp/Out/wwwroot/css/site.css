@@ -1,0 +1,75 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+
+}
+
+.logo{
+    max-height: 4rem;
+}
+.logo-footer {
+    max-height: 2rem;
+}
+
+
+.navbarGap {
+    margin-top: 5rem;
+}
+
+.custom-primary {
+    background-color: #FF5722;
+    border-color: #FF5722;
+}
+
+    .custom-primary:hover,
+    .custom-primary:focus {
+        background-color: #ff6e40;
+        border-color: #ff6e40;
+        outline: none;
+    }
+
+    .custom-primary:active {
+        background-color: #e64a19;
+        border-color: #e64a19;
+    }
+
+    .custom-primary:focus {
+        outline: none;
+    }
+
+.spinner-border {
+    width: 3rem;
+    height: 3rem;
+    border-width: 0.2rem;
+    color: #3498db;
+}
+
+/* Define the spin animation */
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Hide the content by default */
+#my-content {
+    display: none;
+}
