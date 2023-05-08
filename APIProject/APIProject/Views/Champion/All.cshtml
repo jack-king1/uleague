@@ -4,25 +4,35 @@
 @model System.Collections.Generic.Dictionary<string, Champion>;
 @{
 }
+@if(Model == null)
+{
+    <div id="spinner" class="spinner-border" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+}
+else
+{
+    <div class="navbarGap pt-4">
+        <div class="mt-4 row">
+            @if (@Model != null)
+            {
+                @foreach (KeyValuePair<string, Champion> entry in Model)
+                {
+                    <div class="flex flex-row col-6 col-xs-6 col-sm-6 col-md-2 cursor-pointer mb-3">
+                        <div class="d-flex">
+                            <img data-custom-value='@entry.Value.id' id="champBtn" role="button" class="champBtn mx-auto" src="@("http://ddragon.leagueoflegends.com/cdn/13.8.1/img/champion/" + entry.Value.id + ".png")"></img>
+                        </div>
+                        <div class="text-center fw-bold">@entry.Value.name</div>
+                    </div>
+                }
+            }
 
-<div class="navbarGap pt-4">
-    <div class="mt-4 row">
-       @if(@Model != null)
-        {
-        @foreach (KeyValuePair<string, Champion> entry in Model)
-        {
-            <div class="flex flex-row col-6 col-xs-6 col-sm-6 col-md-2 cursor-pointer mb-3">
-                <div class="d-flex">
-                    <img data-custom-value='@entry.Value.id' id="champBtn" role="button" class="champBtn mx-auto" src="@("http://ddragon.leagueoflegends.com/cdn/13.8.1/img/champion/" + entry.Value.id + ".png")"></img>
-                </div>
-                <div class="text-center fw-bold">@entry.Value.name</div>
-            </div>
-        }
-        }
+        </div>
 
     </div>
 
-</div>
+}
+
 
 <script>
     let clickableDivs = document.querySelectorAll('.champBtn');
