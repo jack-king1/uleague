@@ -26,7 +26,6 @@ namespace APIProject.Services
         {
             try
             {
-
                 string apiUrl = $"{url}{currentPatch}/data/{region}/champion.json"; // Replace with your API URL
                 HttpResponseMessage response = await _httpClient.GetAsync(apiUrl);
                 response.EnsureSuccessStatusCode(); // Throw an exception if response is not successful
