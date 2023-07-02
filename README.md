@@ -3,6 +3,8 @@
 ULeague allows players of the game League of Legends to look up games they have played previously to see what items they built, wins/losses, game stats. It also has all champion data for each champion in the game.
 ![ULeague - CTRL + Left Mouse](https://uleagueapis1northeurope.azurewebsites.net/)
 
+![Home Page](https://github.com/jack-king1/aspnetapi/blob/main/ReadmePhotos/home.jpg)
+
 ## How To Access ULeague?
 Just visit the live URL: ![ULeague - CTRL + Left Mouse](https://uleagueapis1northeurope.azurewebsites.net/)
 
@@ -15,6 +17,11 @@ Just visit the live URL: ![ULeague - CTRL + Left Mouse](https://uleagueapis1nort
 6. Async
 7. Azure
 8. CI/CD
+
+![Build Design Page](https://github.com/jack-king1/aspnetapi/blob/main/ReadmePhotos/home.jpg)
+![Build Design Page](https://github.com/jack-king1/aspnetapi/blob/main/ReadmePhotos/summoner.jpg)
+![Build Design Page](https://github.com/jack-king1/aspnetapi/blob/main/ReadmePhotos/champions.jpg)
+![Build Design Page](https://github.com/jack-king1/aspnetapi/blob/main/ReadmePhotos/championpage.jpg)
 
 Current Features:
 1. Retrieve and display up to date data from Riot Games API
