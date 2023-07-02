@@ -1097,6 +1097,7 @@ namespace APIProject.Models
             // Create an instance of the API service
             var riotAPIService = new RiotAPIService();
 
+
             //Check if global data is available
             if (!GlobalSummonerData.IsLoaded())
             {
@@ -1131,269 +1132,298 @@ namespace APIProject.Models
                 Console.WriteLine($"Error: {ex.Message}");
                 return null;
             }
-
-            foreach (string matchDataID in ids)
+            //check to see if summoner actually has any match history to display, if no, return null.
+            if (ids.Count <= 0)
             {
-                dynamic matchDataJson = await riotAPIService.GetSummonerMatchDataByMatchID(matchDataID);
-                try
-                {
-                    // ... process the retrieved data as needed ...
-                    RootGameData md = new RootGameData();
-                    md = JObject.Parse(matchDataJson).ToObject<RootGameData>();
-                    matchGameDataList.Add(md);
-                }
-                catch (Exception ex)
-                {
-                    // Handle any exceptions
-                    Console.WriteLine($"Error: {ex.Message}");
-                    return null;
-                }
-            }
-            //The active rune ids for searched player for each match.
-            List<int?> primaryRuneListID = new List<int?>();
-            List<int?> secondaryRuneListID = new List<int?>();
-            //The active summoner spell ids for searched player for each match.
-            List<int?> summonerSpell0List = new List<int?>();
-            List<int?> summonerSpell1List = new List<int?>();
-            List<List<string>> summonerChampionImgPathTemp = new List<List<string>>();
-            string profileImgURL = $"http://ddragon.leagueoflegends.com/cdn/{GlobalSummonerData.patchVersion.PatchVersionsList[0]}/img/profileicon/";
-
-            SummonerDataAll package = new SummonerDataAll();
-            package.data = summonerData;
-            package.profileImgURL = profileImgURL + package.data.profileIconId + ".png";
-            package.matchGameDataList = matchGameDataList;
-            package.gameLengthMinutes = new List<int>();
-            package.gameLengthSeconds = new List<int>();
-            package.didWin = new List<string>();
-            package.sincePlayed = new List<string>();
-            package.gameType = new List<string>();
-            package.kdaRatio = new List<string>();
-            package.kda = new KDA();
-            package.kda.kills = new List<int>();
-            package.kda.deaths = new List<int>();
-            package.kda.assists = new List<int>();
-            package.killParticipationPercentage = new List<string>();
-            package.controlWardCount = new List<int?>();
-            package.creepScore = new List<string>();
-            package.itemIDList = new List<List<int>>();
-            package.championLevelList = new List<int?>();
-            int gameIncrementCount = 0;
-            foreach (RootGameData rgd in package.matchGameDataList)
-            {
-                package.gameLengthSeconds.Add((int)(rgd.info.gameDuration % 60));
-                package.gameLengthMinutes.Add((int)(rgd.info.gameDuration) / 60);
-                string gameModeName = "Normal";
-                //Game Type
-                if(rgd.info.queueId == 420)
-                {
-                    gameModeName = "Ranked Solo";
-                }
-                else if(rgd.info.queueId == 440)
-                {
-                    gameModeName = "Ranked Flex";
-                }
-                else if (rgd.info.queueId == 450)
-                {
-                    gameModeName = "ARAM";
-                }
-                package.gameType.Add(gameModeName);
-
-
-                //Days ago
-                DateTime dt = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)
-                .AddMilliseconds((double)rgd.info.gameEndTimestamp);
-
-                // Calculate the time elapsed from the timestamp to now
-                TimeSpan timeElapsed = DateTime.UtcNow - dt;
-
-                // Extract the number of days from the time elapsed
-                int daysAgo = (int)timeElapsed.TotalDays;
-                int hoursAgo = 0;
-                if(timeElapsed.TotalDays < 1)
-                {
-                    hoursAgo = (int)timeElapsed.TotalHours;
-                }
-                package.sincePlayed.Add((daysAgo == 0) ? $"{hoursAgo} hours ago" : $"{daysAgo} days ago");
-                List<string> correctedChampNames = new List<string>();
-                for (int i = 0; i < rgd.info.participants.Count; i++)
-                {
-                    if (rgd.info.participants[i].puuid == package.data.puuid)
-                    {
-                        thisPlayersMatchData.Add(rgd.info.participants[i]);
-                        primaryRuneListID.Add(rgd.info.participants[i].perks.styles[0].selections[0].perk);
-                        secondaryRuneListID.Add(rgd.info.participants[i].perks.styles[1].style);
-                        summonerSpell0List.Add(rgd.info.participants[i].summoner1Id);
-                        summonerSpell1List.Add(rgd.info.participants[i].summoner2Id);
-                        package.didWin.Add((bool)(rgd.info.participants[i].win) ? "Victory" : "Defeat");
-                        double kdaToNonNullable = (double)rgd.info.participants[i].challenges.kda;
-                        string toFloatingPoinTwo = kdaToNonNullable.ToString("0.00");
-                        package.kdaRatio.Add($"{toFloatingPoinTwo}:1 KDA");
-                        package.kda.kills.Add((int)rgd.info.participants[i].kills);
-                        package.kda.deaths.Add((int)rgd.info.participants[i].deaths);
-                        package.kda.assists.Add((int)rgd.info.participants[i].assists);
-                        package.championLevelList.Add(rgd.info.participants[i].champLevel);
-                        if(rgd.info.participants[i].challenges.killParticipation != null)
-                        {
-                            double percentage = (double)rgd.info.participants[i].challenges.killParticipation;
-                            string formattedPercentage = percentage.ToString("0%");
-                            package.killParticipationPercentage.Add(formattedPercentage);
-                        }
-                        else
-                        {
-                            string formattedPercentage = "0%";
-                            package.killParticipationPercentage.Add(formattedPercentage);
-                        }
-                        
-                        package.controlWardCount.Add(rgd.info.participants[i].challenges.controlWardsPlaced);
-                        float csPerMinute = (float)rgd.info.participants[i].totalMinionsKilled / (float)package.gameLengthMinutes[gameIncrementCount];
-                        package.creepScore.Add($"CS {rgd.info.participants[i].totalMinionsKilled} ({csPerMinute.ToString("0.00")})");
-                        //package.playerRank.Add($"")
-                        //items
-                        List<int> itemsToAdd = new List<int>();
-                        #region riotapididntmakeitalist
-                        if((int)rgd.info.participants[i].item0 != 0)
-                        {
-                            itemsToAdd.Add((int)rgd.info.participants[i].item0);
-                        }
-                        else
-                        {
-                            itemsToAdd.Add(7050);
-                        }
-                        if ((int)rgd.info.participants[i].item1 != 0)
-                        {
-                            itemsToAdd.Add((int)rgd.info.participants[i].item1);
-                        }
-                        else
-                        {
-                            itemsToAdd.Add(7050);
-                        }
-                        if ((int)rgd.info.participants[i].item2 != 0)
-                        {
-                            itemsToAdd.Add((int)rgd.info.participants[i].item2);
-                        }
-                        else
-                        {
-                            itemsToAdd.Add(7050);
-                        }
-                        if ((int)rgd.info.participants[i].item3 != 0)
-                        {
-                            itemsToAdd.Add((int)rgd.info.participants[i].item3);
-                        }
-                        else
-                        {
-                            itemsToAdd.Add(7050);
-                        }
-                        if ((int)rgd.info.participants[i].item4 != 0)
-                        {
-                            itemsToAdd.Add((int)rgd.info.participants[i].item4);
-                        }
-                        else
-                        {
-                            itemsToAdd.Add(7050);
-                        }
-                        if ((int)rgd.info.participants[i].item5 != 0)
-                        {
-                            itemsToAdd.Add((int)rgd.info.participants[i].item5);
-                        }
-                        else
-                        {
-                            itemsToAdd.Add(7050);
-                        }
-                        if ((int)rgd.info.participants[i].item6 != 0)
-                        {
-                            itemsToAdd.Add((int)rgd.info.participants[i].item6);
-                        }
-                        else
-                        {
-                            itemsToAdd.Add(7050);
-                        }
-                        #endregion
-                        package.itemIDList.Add(itemsToAdd);
-                    }
-                    correctedChampNames.Add(CreateSummonerIconURLPath((int)rgd.info.participants[i].championId, 
-                        GlobalSummonerData.patchVersion.PatchVersionsList[0]));
-                }
-                //get the correct name path for each champ icon :/ cause riot cant name their champions correctly
-                summonerChampionImgPathTemp.Add(correctedChampNames);
-                gameIncrementCount++;
+                return null;
             }
 
-            package.secondaryRunePath = new List<string>();
-            package.primaryRunePath = new List<string>();
-            for (int primary = 0; primary < primaryRuneListID.Count; primary++)
+            try
             {
-                foreach (RuneData.RuneDataRoot rd in GlobalSummonerData.RuneData)
+                foreach (string matchDataID in ids)
                 {
-                    foreach (var rune in rd.slots[0].runes)
+                    dynamic matchDataJson = await riotAPIService.GetSummonerMatchDataByMatchID(matchDataID);
+                    try
                     {
-                        if (rune.id == primaryRuneListID[primary])
-                        {
-                            package.primaryRunePath.Add(rune.icon);
-                        }
+                        // ... process the retrieved data as needed ...
+                        RootGameData md = new RootGameData();
+                        md = JObject.Parse(matchDataJson).ToObject<RootGameData>();
+                        matchGameDataList.Add(md);
                     }
-
-                    if (rd.id == secondaryRuneListID[primary])
+                    catch (Exception ex)
                     {
-                        package.secondaryRunePath.Add(rd.icon);
+                        // Handle any exceptions
+                        Console.WriteLine($"Error: {ex.Message}");
+                        return null;
                     }
                 }
-            }
+                //The active rune ids for searched player for each match.
+                List<int?> primaryRuneListID = new List<int?>();
+                List<int?> secondaryRuneListID = new List<int?>();
+                //The active summoner spell ids for searched player for each match.
+                List<int?> summonerSpell0List = new List<int?>();
+                List<int?> summonerSpell1List = new List<int?>();
+                List<List<string>> summonerChampionImgPathTemp = new List<List<string>>();
+                string profileImgURL = $"http://ddragon.leagueoflegends.com/cdn/{GlobalSummonerData.patchVersion.PatchVersionsList[0]}/img/profileicon/";
 
-            package.summonerSpell1ImgPath = new List<string>();
-            package.summonerSpell2ImgPath = new List<string>();
-            SummonerSpellData.Data data = GlobalSummonerData.SummonerSpellData.data;
-            for (int summonerSpellCount = 0; summonerSpellCount < summonerSpell0List.Count; summonerSpellCount++)
-            {
-                foreach (var component in new object[] { data.SummonerFlash, data.SummonerBarrier, data.SummonerBoost, data.SummonerDot, data.SummonerExhaust,
-                data.SummonerMana, data.SummonerSmite, data.SummonerSnowball, data.SummonerHaste, data.SummonerHeal, data.Summoner_UltBookSmitePlaceholder,
-                    data.Summoner_UltBookPlaceholder, data.SummonerPoroRecall, data.SummonerPoroThrow, data.SummonerTeleport, data.SummonerSnowURFSnowball_Mark,
-                    data.SummonerHaste})
+                SummonerDataAll package = new SummonerDataAll();
+                package.data = summonerData;
+                package.profileImgURL = profileImgURL + package.data.profileIconId + ".png";
+                package.matchGameDataList = matchGameDataList;
+                package.gameLengthMinutes = new List<int>();
+                package.gameLengthSeconds = new List<int>();
+                package.didWin = new List<string>();
+                package.sincePlayed = new List<string>();
+                package.gameType = new List<string>();
+                package.kdaRatio = new List<string>();
+                package.kda = new KDA();
+                package.kda.kills = new List<int>();
+                package.kda.deaths = new List<int>();
+                package.kda.assists = new List<int>();
+                package.killParticipationPercentage = new List<string>();
+                package.controlWardCount = new List<int?>();
+                package.creepScore = new List<string>();
+                package.itemIDList = new List<List<int>>();
+                package.championLevelList = new List<int?>();
+                int gameIncrementCount = 0;
+                foreach (RootGameData rgd in package.matchGameDataList)
                 {
-                    bool matchingSpellID1 = false;
-                    bool matchingSpellID2 = false;
-
-                    foreach (var property in component.GetType().GetProperties())
+                    package.gameLengthSeconds.Add((int)(rgd.info.gameDuration % 60));
+                    package.gameLengthMinutes.Add((int)(rgd.info.gameDuration) / 60);
+                    string gameModeName = "Normal";
+                    //Game Type
+                    if (rgd.info.queueId == 420)
                     {
-                        if (property.Name == "key")
+                        gameModeName = "Ranked Solo";
+                    }
+                    else if (rgd.info.queueId == 440)
+                    {
+                        gameModeName = "Ranked Flex";
+                    }
+                    else if (rgd.info.queueId == 450)
+                    {
+                        gameModeName = "ARAM";
+                    }
+                    package.gameType.Add(gameModeName);
+
+
+                    //Days ago
+                    DateTime dt = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)
+                    .AddMilliseconds((double)rgd.info.gameEndTimestamp);
+
+                    // Calculate the time elapsed from the timestamp to now
+                    TimeSpan timeElapsed = DateTime.UtcNow - dt;
+
+                    // Extract the number of days from the time elapsed
+                    int daysAgo = (int)timeElapsed.TotalDays;
+                    int hoursAgo = 0;
+                    if (timeElapsed.TotalDays < 1)
+                    {
+                        hoursAgo = (int)timeElapsed.TotalHours;
+                    }
+                    package.sincePlayed.Add((daysAgo == 0) ? $"{hoursAgo} hours ago" : $"{daysAgo} days ago");
+                    List<string> correctedChampNames = new List<string>();
+                    for (int i = 0; i < rgd.info.participants.Count; i++)
+                    {
+                        if (rgd.info.participants[i].puuid == package.data.puuid)
                         {
-                            
-                            int summonerID = int.Parse((string)property.GetValue(component));
-                            if(summonerID == summonerSpell0List[summonerSpellCount])
+                            try
                             {
-                                matchingSpellID1 = true;
+                                thisPlayersMatchData.Add(rgd.info.participants[i]);
+                                primaryRuneListID.Add(rgd.info.participants[i].perks.styles[0].selections[0].perk);
+                                secondaryRuneListID.Add(rgd.info.participants[i].perks.styles[1].style);
+                                summonerSpell0List.Add(rgd.info.participants[i].summoner1Id);
+                                summonerSpell1List.Add(rgd.info.participants[i].summoner2Id);
+                                package.didWin.Add((bool)(rgd.info.participants[i].win) ? "Victory" : "Defeat");
+                                Console.WriteLine(rgd);
+                                if(rgd.info.participants[i].challenges == null)
+                                {
+                                    return null;
+                                }
+                                double kdaToNonNullable = (double)rgd.info.participants[i].challenges.kda;
+                                string toFloatingPoinTwo = kdaToNonNullable.ToString("0.00");
+                                package.kdaRatio.Add($"{toFloatingPoinTwo}:1 KDA");
+                                package.kda.kills.Add((int)rgd.info.participants[i].kills);
+                                package.kda.deaths.Add((int)rgd.info.participants[i].deaths);
+                                package.kda.assists.Add((int)rgd.info.participants[i].assists);
+                                package.championLevelList.Add(rgd.info.participants[i].champLevel);
                             }
-                            else if(summonerID == summonerSpell1List[summonerSpellCount])
+                            catch (Exception ex)
                             {
-                                matchingSpellID2 = true;
+                                Console.WriteLine($"An error occurred: {ex.Message}");
+                                return null;
                             }
-                        }
-                        
-                        if(!matchingSpellID1 && !matchingSpellID2)
-                        {
-                            continue;
-                        }
-                        
-                        if(property.Name == "image")
-                        {
-                            SummonerSpellData.Image summonerSpellImage = (SummonerSpellData.Image)property.GetValue(component);
-                            if(matchingSpellID1)
+
+                            if (rgd.info.participants[i].challenges.killParticipation != null)
                             {
-                                package.summonerSpell1ImgPath.Add(summonerSpellImage.full);
+                                double percentage = (double)rgd.info.participants[i].challenges.killParticipation;
+                                string formattedPercentage = percentage.ToString("0%");
+                                package.killParticipationPercentage.Add(formattedPercentage);
                             }
                             else
                             {
-                                package.summonerSpell2ImgPath.Add(summonerSpellImage.full);
+                                string formattedPercentage = "0%";
+                                package.killParticipationPercentage.Add(formattedPercentage);
+                            }
+
+                            package.controlWardCount.Add(rgd.info.participants[i].challenges.controlWardsPlaced);
+                            float csPerMinute = (float)rgd.info.participants[i].totalMinionsKilled / (float)package.gameLengthMinutes[gameIncrementCount];
+                            package.creepScore.Add($"CS {rgd.info.participants[i].totalMinionsKilled} ({csPerMinute.ToString("0.00")})");
+                            //package.playerRank.Add($"")
+                            //items
+                            List<int> itemsToAdd = new List<int>();
+                            #region riotapididntmakeitalist
+                            if ((int)rgd.info.participants[i].item0 != 0)
+                            {
+                                itemsToAdd.Add((int)rgd.info.participants[i].item0);
+                            }
+                            else
+                            {
+                                itemsToAdd.Add(7050);
+                            }
+                            if ((int)rgd.info.participants[i].item1 != 0)
+                            {
+                                itemsToAdd.Add((int)rgd.info.participants[i].item1);
+                            }
+                            else
+                            {
+                                itemsToAdd.Add(7050);
+                            }
+                            if ((int)rgd.info.participants[i].item2 != 0)
+                            {
+                                itemsToAdd.Add((int)rgd.info.participants[i].item2);
+                            }
+                            else
+                            {
+                                itemsToAdd.Add(7050);
+                            }
+                            if ((int)rgd.info.participants[i].item3 != 0)
+                            {
+                                itemsToAdd.Add((int)rgd.info.participants[i].item3);
+                            }
+                            else
+                            {
+                                itemsToAdd.Add(7050);
+                            }
+                            if ((int)rgd.info.participants[i].item4 != 0)
+                            {
+                                itemsToAdd.Add((int)rgd.info.participants[i].item4);
+                            }
+                            else
+                            {
+                                itemsToAdd.Add(7050);
+                            }
+                            if ((int)rgd.info.participants[i].item5 != 0)
+                            {
+                                itemsToAdd.Add((int)rgd.info.participants[i].item5);
+                            }
+                            else
+                            {
+                                itemsToAdd.Add(7050);
+                            }
+                            if ((int)rgd.info.participants[i].item6 != 0)
+                            {
+                                itemsToAdd.Add((int)rgd.info.participants[i].item6);
+                            }
+                            else
+                            {
+                                itemsToAdd.Add(7050);
+                            }
+                            #endregion
+                            package.itemIDList.Add(itemsToAdd);
+                        }
+                        correctedChampNames.Add(CreateSummonerIconURLPath((int)rgd.info.participants[i].championId,
+                            GlobalSummonerData.patchVersion.PatchVersionsList[0]));
+                    }
+                    //get the correct name path for each champ icon :/ cause riot cant name their champions correctly
+                    summonerChampionImgPathTemp.Add(correctedChampNames);
+                    gameIncrementCount++;
+                }
+
+                package.secondaryRunePath = new List<string>();
+                package.primaryRunePath = new List<string>();
+                for (int primary = 0; primary < primaryRuneListID.Count; primary++)
+                {
+                    foreach (RuneData.RuneDataRoot rd in GlobalSummonerData.RuneData)
+                    {
+                        foreach (var rune in rd.slots[0].runes)
+                        {
+                            if (rune.id == primaryRuneListID[primary])
+                            {
+                                package.primaryRunePath.Add(rune.icon);
+                            }
+                        }
+
+                        if (rd.id == secondaryRuneListID[primary])
+                        {
+                            package.secondaryRunePath.Add(rd.icon);
+                        }
+                    }
+                }
+
+                package.summonerSpell1ImgPath = new List<string>();
+                package.summonerSpell2ImgPath = new List<string>();
+                SummonerSpellData.Data data = GlobalSummonerData.SummonerSpellData.data;
+                for (int summonerSpellCount = 0; summonerSpellCount < summonerSpell0List.Count; summonerSpellCount++)
+                {
+                    foreach (var component in new object[] { data.SummonerFlash, data.SummonerBarrier, data.SummonerBoost, data.SummonerDot, data.SummonerExhaust,
+                data.SummonerMana, data.SummonerSmite, data.SummonerSnowball, data.SummonerHaste, data.SummonerHeal, data.Summoner_UltBookSmitePlaceholder,
+                    data.Summoner_UltBookPlaceholder, data.SummonerPoroRecall, data.SummonerPoroThrow, data.SummonerTeleport, data.SummonerSnowURFSnowball_Mark,
+                    data.SummonerHaste})
+                    {
+                        bool matchingSpellID1 = false;
+                        bool matchingSpellID2 = false;
+
+                        foreach (var property in component.GetType().GetProperties())
+                        {
+                            if (property.Name == "key")
+                            {
+
+                                int summonerID = int.Parse((string)property.GetValue(component));
+                                if (summonerID == summonerSpell0List[summonerSpellCount])
+                                {
+                                    matchingSpellID1 = true;
+                                }
+                                else if (summonerID == summonerSpell1List[summonerSpellCount])
+                                {
+                                    matchingSpellID2 = true;
+                                }
+                            }
+
+                            if (!matchingSpellID1 && !matchingSpellID2)
+                            {
+                                continue;
+                            }
+
+                            if (property.Name == "image")
+                            {
+                                SummonerSpellData.Image summonerSpellImage = (SummonerSpellData.Image)property.GetValue(component);
+                                if (matchingSpellID1)
+                                {
+                                    package.summonerSpell1ImgPath.Add(summonerSpellImage.full);
+                                }
+                                else
+                                {
+                                    package.summonerSpell2ImgPath.Add(summonerSpellImage.full);
+                                }
                             }
                         }
                     }
                 }
+
+                package.summonerChampionImgPath = summonerChampionImgPathTemp;
+                package.playerMatchDataList = thisPlayersMatchData;
+
+                // Return the processed dat   
+                return package;
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine($"An error occurred: {ex.Message}");
+                return null;
             }
 
-            package.summonerChampionImgPath = summonerChampionImgPathTemp;
-            package.playerMatchDataList = thisPlayersMatchData;
-
-            // Return the processed dat   
-            return package;
+            
         }
 
         [HttpPost]

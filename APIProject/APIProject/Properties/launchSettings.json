@@ -14,14 +14,16 @@
       "launchBrowser": true,
       "applicationUrl": "https://localhost:7227;http://localhost:5230",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_RGAPI": "RGAPI-e54b7832-42b0-4d8c-8831-e00463cfa72b",
       }
     },
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_RGAPI": "RGAPI-e54b7832-42b0-4d8c-8831-e00463cfa72b"
       }
     }
   }
