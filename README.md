@@ -1,12 +1,12 @@
 # Uleague
 ## What is ULeague?
 ULeague allows players of the game League of Legends to look up games they have played previously to see what items they built, wins/losses, game stats. It also has all champion data for each champion in the game.
-![ULeague - CTRL + Left Mouse](https://uleagueapis1northeurope.azurewebsites.net/)
+[ULeague - CTRL + Left Mouse](https://uleagueapis1northeurope.azurewebsites.net/)
 
 ![Home Page](https://github.com/jack-king1/aspnetapi/blob/main/ReadmePhotos/home.jpg)
 
 ## How To Access ULeague?
-Just visit the live URL: ![ULeague - CTRL + Left Mouse](https://uleagueapis1northeurope.azurewebsites.net/)
+Just visit the live URL: [ULeague - CTRL + Left Mouse](https://uleagueapis1northeurope.azurewebsites.net/)
 
 ## Technologies
 1. C#
